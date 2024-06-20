@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,11 +78,11 @@ dependencies {
 
     implementation(libs.androidX.room.ktx)
     implementation(libs.androidX.room.runtime)
-    annotationProcessor(libs.androidX.room.compiler)
+    ksp(libs.androidX.room.compiler)
     implementation(libs.androidX.room.testing)
 
     implementation(libs.dagger.hilt.android)
-    annotationProcessor(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.navigation)
 
     implementation(libs.androidX.room.paging)
