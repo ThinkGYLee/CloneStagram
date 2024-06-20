@@ -48,7 +48,7 @@ dagger-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", ver
 kotlin-coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutine" }
 kotlin-stdlib = {module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin"}
 
-landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapist"}
+landscapist-coil = { module = "com.github.skydoves:landscapist-coil", version.ref = "landscapist"}
 landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapist"}
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 

@@ -91,7 +91,7 @@ dependencies {
 
     implementation(libs.kotlin.stdlib)
 
-    implementation(libs.landscapist.glide)
+    implementation(libs.landscapist.coil)
     implementation(libs.landscapist.placeholder)
 
 }
