@@ -15,6 +15,7 @@ room = "2.6.1"
 paging = "3.3.0"
 kotlin-coroutine = "1.8.0"
 landscapist = "2.3.3"
+appcompatVersion = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +50,7 @@ kotlin-stdlib = {module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "k
 
 landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapist"}
 landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapist"}
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 
 
 
