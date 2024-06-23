@@ -1,7 +1,9 @@
 package com.gyleedev.clonestagram.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -25,6 +28,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
@@ -87,6 +92,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
+            //story row
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,84 +118,70 @@ fun HomeScreen(
                         modifier = Modifier.align(Alignment.BottomEnd)
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(end = 20.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icons8_test_account_96),
-                        contentDescription = null,
+                for (i in 0..6) {
+                    Box(
                         modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.AddCircle,
-                        contentDescription = null,
-                        tint = Color.Blue,
-                        modifier = Modifier.align(Alignment.BottomEnd)
-                    )
+                            .wrapContentSize()
+                            .padding(end = 20.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_96),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(80.dp)
+                                .align(Alignment.Center)
+                                .border(
+                                    width = 2.dp,
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(Color.Yellow, Color.Red),
+                                        start = Offset(0f, 0f),
+                                        end = Offset(70f, 70f)
+                                    ),
+                                    shape = CircleShape
+                                )
+                        )
+                    }
                 }
+            }
 
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(end = 20.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icons8_test_account_96),
-                        contentDescription = null,
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp)
+            ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+                    Box(
                         modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.AddCircle,
-                        contentDescription = null,
-                        tint = Color.Blue,
-                        modifier = Modifier.align(Alignment.BottomEnd)
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(end = 20.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icons8_test_account_96),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.AddCircle,
-                        contentDescription = null,
-                        tint = Color.Blue,
-                        modifier = Modifier.align(Alignment.BottomEnd)
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(end = 20.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icons8_test_account_96),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.AddCircle,
-                        contentDescription = null,
-                        tint = Color.Blue,
-                        modifier = Modifier.align(Alignment.BottomEnd)
-                    )
+                            .wrapContentSize()
+                            .padding(start = 16.dp, end = 20.dp)
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.linearGradient(
+                                    colors = listOf(Color.Yellow, Color.Red),
+                                    start = Offset(0f, 0f),
+                                    end = Offset(70f, 70f)
+                                ),
+                                shape = CircleShape
+                            )
+                    ) {
+                        /*Canvas(
+                            modifier = Modifier
+                                .size(300.dp)
+                                .background(Color.White),
+                            onDraw = {
+                                drawCircle(
+                                    color = Color.Blue,
+                                    radius = 22.dp.toPx(),
+                                    center = Offset(20.dp.toPx(), 20.dp.toPx())
+                                )
+                            }
+                        )*/
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_96),
+                            contentDescription = null,
+                            modifier = Modifier.size(40.dp)
+                        )
+                    }
                 }
             }
         }
