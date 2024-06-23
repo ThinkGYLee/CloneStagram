@@ -69,6 +69,9 @@ fun HomeScreen(
     val isHeartTrue = remember {
         mutableStateOf(false)
     }
+    val isBookMarkTrue = remember {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         topBar = {
@@ -301,13 +304,31 @@ fun HomeScreen(
                             .size(28.dp)
                     )
                     Spacer(modifier = Modifier.weight(10f))
-                    Icon(
-                        painter = painterResource(id = R.drawable.save_instagram_black_lineal_18315),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .size(28.dp)
-                    )
+                    if (isBookMarkTrue.value) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.black_save_instagram_18316),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(28.dp)
+                                .bounceClick(
+                                    onClick = {},
+                                    onClickEnd = { isBookMarkTrue.value = !isBookMarkTrue.value }
+                                )
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.save_instagram_black_lineal_18315),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(28.dp)
+                                .bounceClick(
+                                    onClick = {},
+                                    onClickEnd = { isBookMarkTrue.value = !isBookMarkTrue.value }
+                                )
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text("좋아요 3658개", modifier = Modifier.padding(start = 20.dp))
