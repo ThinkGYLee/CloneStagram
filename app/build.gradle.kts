@@ -54,9 +54,7 @@ android {
     }
 }
 
-
 dependencies {
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -96,5 +94,4 @@ dependencies {
 
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.placeholder)
-
 }

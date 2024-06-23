@@ -57,7 +57,7 @@ fun HomeScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { /*TODO*/ }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.heart_svgrepo_com),
@@ -66,7 +66,7 @@ fun HomeScreen(
                         )
                     }
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { /*TODO*/ }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.facebook_messenger_2880),

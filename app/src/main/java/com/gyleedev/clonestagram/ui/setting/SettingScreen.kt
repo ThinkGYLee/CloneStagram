@@ -7,5 +7,4 @@ import androidx.compose.ui.Modifier
 fun SettingScreen(
     modifier: Modifier
 ) {
-
 }

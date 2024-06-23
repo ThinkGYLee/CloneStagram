@@ -46,7 +46,7 @@ import com.gyleedev.clonestagram.ui.upload.UploadScreen
 sealed class BottomNavItem(
     val title: Int,
     val icons: BottomNavIconTypes,
-    val screenRoute: String,
+    val screenRoute: String
 ) {
     data object Home : BottomNavItem(
         R.string.title_home,
@@ -106,7 +106,7 @@ sealed interface BottomNavIconTypes {
     ) : BottomNavIconTypes
 
     data class BottomNavSingleImageVector(
-        val icon: ImageVector,
+        val icon: ImageVector
     ) : BottomNavIconTypes
 
     data class BottomNavSingleDrawableImage(
@@ -115,7 +115,6 @@ sealed interface BottomNavIconTypes {
 
     data object BottomNavNoIcon : BottomNavIconTypes
 }
-
 
 @Composable
 fun CloneStagramScreen(
@@ -135,7 +134,6 @@ fun CloneStagramScreen(
                 .padding(bottom = innerPadding.calculateBottomPadding())
                 .statusBarsPadding()
         ) {
-
             composable(route = BottomNavItem.Home.screenRoute) {
                 HomeScreen(modifier = Modifier.fillMaxSize())
             }
@@ -154,11 +152,13 @@ fun CloneStagramScreen(
                 SearchScreen(modifier = Modifier.fillMaxSize())
             }
 
-            composable(route = BottomNavItem.Upload.screenRoute,
+            composable(
+                route = BottomNavItem.Upload.screenRoute,
                 enterTransition = {
                     fadeIn(
                         animationSpec = tween(
-                            300, easing = FastOutLinearInEasing
+                            300,
+                            easing = FastOutLinearInEasing
                         )
                     ) + slideIntoContainer(
                         animationSpec = tween(300, easing = EaseIn),
@@ -168,7 +168,8 @@ fun CloneStagramScreen(
                 exitTransition = {
                     fadeOut(
                         animationSpec = tween(
-                            300, easing = FastOutLinearInEasing
+                            300,
+                            easing = FastOutLinearInEasing
                         )
                     ) + slideOutOfContainer(
                         animationSpec = tween(300, easing = EaseOut),
@@ -183,7 +184,6 @@ fun CloneStagramScreen(
                 SettingScreen(modifier = Modifier.fillMaxSize())
             }
         }
-
     }
 }
 
@@ -249,7 +249,7 @@ fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
                         is BottomNavIconTypes.BottomNavSingleImageVector -> {
                             Icon(
                                 imageVector = item.icons.icon,
-                                contentDescription = null,
+                                contentDescription = null
                             )
                         }
 
