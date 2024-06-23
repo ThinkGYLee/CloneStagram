@@ -1,5 +1,15 @@
 package com.gyleedev.clonestagram.ui
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,7 +20,9 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,7 +68,7 @@ sealed class BottomNavItem(
 
     data object Setting : BottomNavItem(
         R.string.title_setting,
-        BottomNavIconTypes.BottomNavSingleDrawable(R.drawable.icons8_user_profile_48),
+        BottomNavIconTypes.BottomNavSingleDrawableImage(R.drawable.icons8_test_account_48),
         SETTING
     )
 
@@ -71,7 +83,7 @@ sealed class BottomNavItem(
 
     data object Upload : BottomNavItem(
         R.string.title_upload,
-        BottomNavIconTypes.BottomNavSingleDrawable(
+        BottomNavIconTypes.BottomNavSingleDrawableIcon(
             R.drawable.icons8_add_100
         ),
         UPLOAD
@@ -89,12 +101,16 @@ sealed interface BottomNavIconTypes {
         val selectedIcons: Int
     ) : BottomNavIconTypes
 
-    data class BottomNavSingleDrawable(
+    data class BottomNavSingleDrawableIcon(
         val icon: Int
     ) : BottomNavIconTypes
 
     data class BottomNavSingleImageVector(
         val icon: ImageVector,
+    ) : BottomNavIconTypes
+
+    data class BottomNavSingleDrawableImage(
+        val image: Int
     ) : BottomNavIconTypes
 
     data object BottomNavNoIcon : BottomNavIconTypes
@@ -113,15 +129,20 @@ fun CloneStagramScreen(
         NavHost(
             navController = navController,
             startDestination = BottomNavItem.Home.screenRoute,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
             modifier = Modifier
                 .padding(bottom = innerPadding.calculateBottomPadding())
                 .statusBarsPadding()
         ) {
+
             composable(route = BottomNavItem.Home.screenRoute) {
                 HomeScreen(modifier = Modifier.fillMaxSize())
             }
 
-            composable(route = BottomNavItem.Detail.screenRoute) {
+            composable(
+                route = BottomNavItem.Detail.screenRoute
+            ) {
                 DetailScreen(modifier = Modifier.fillMaxSize())
             }
 
@@ -133,7 +154,28 @@ fun CloneStagramScreen(
                 SearchScreen(modifier = Modifier.fillMaxSize())
             }
 
-            composable(route = BottomNavItem.Upload.screenRoute) {
+            composable(route = BottomNavItem.Upload.screenRoute,
+                enterTransition = {
+                    fadeIn(
+                        animationSpec = tween(
+                            300, easing = FastOutLinearInEasing
+                        )
+                    ) + slideIntoContainer(
+                        animationSpec = tween(300, easing = EaseIn),
+                        towards = AnimatedContentTransitionScope.SlideDirection.End
+                    )
+                },
+                exitTransition = {
+                    fadeOut(
+                        animationSpec = tween(
+                            300, easing = FastOutLinearInEasing
+                        )
+                    ) + slideOutOfContainer(
+                        animationSpec = tween(300, easing = EaseOut),
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start
+                    )
+                }
+            ) {
                 UploadScreen(modifier = Modifier.fillMaxSize())
             }
 
@@ -196,24 +238,27 @@ fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
                             }
                         }
 
-                        is BottomNavIconTypes.BottomNavSingleDrawable -> {
-
+                        is BottomNavIconTypes.BottomNavSingleDrawableIcon -> {
                             Icon(
                                 painter = painterResource(id = item.icons.icon),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(24.dp)
+                                modifier = Modifier.size(24.dp)
                             )
-
                         }
 
                         is BottomNavIconTypes.BottomNavSingleImageVector -> {
-
                             Icon(
                                 imageVector = item.icons.icon,
                                 contentDescription = null,
                             )
+                        }
 
+                        is BottomNavIconTypes.BottomNavSingleDrawableImage -> {
+                            Image(
+                                painter = painterResource(id = item.icons.image),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
                         }
 
                         else -> {}
@@ -230,6 +275,9 @@ fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
                         restoreState = true
                     }
                 },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = NavigationBarDefaults.containerColor
+                )
             )
         }
     }
