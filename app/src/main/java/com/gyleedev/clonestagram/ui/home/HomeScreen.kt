@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -127,6 +128,8 @@ fun HomeScreen(
             .fillMaxSize()
             .nestedScroll(verticalScrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
+        println(innerPadding)
+
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -410,8 +413,10 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                     fontWeight = FontWeight.Light
                 )
+                Spacer(modifier = Modifier.height(60.dp))
             }
         }
+
         if (isCommentBottomSheetTrue.value) {
             CommentModalBottomSheet(
                 modifier = Modifier,
@@ -477,7 +482,7 @@ private fun CommentModalBottomSheet(
         onDismissRequest = { closeSheet() },
         sheetState = sheetState,
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        modifier = modifier
+        modifier = modifier.navigationBarsPadding()
     ) {
         Box(
             modifier = Modifier.fillMaxHeight(),
