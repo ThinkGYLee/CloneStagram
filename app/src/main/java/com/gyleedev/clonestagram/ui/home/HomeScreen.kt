@@ -131,7 +131,7 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
         ) {
             // story row
             Row(
@@ -184,7 +184,6 @@ fun HomeScreen(
                     )
                 }
                 for (i in 0..6) {
-
                     Column(
                         modifier = Modifier
                             .fillMaxHeight()
@@ -226,7 +225,6 @@ fun HomeScreen(
                             modifier = Modifier
                         )
                     }
-
                 }
             }
             // 게시물
@@ -374,7 +372,8 @@ fun HomeScreen(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    "좋아요 3658개", modifier = Modifier
+                    "좋아요 3658개",
+                    modifier = Modifier
                         .padding(start = 20.dp)
                 )
                 Spacer(modifier = Modifier.height(2.dp))
@@ -397,7 +396,7 @@ fun HomeScreen(
                         },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                    fontWeight = FontWeight.Light,
+                    fontWeight = FontWeight.Light
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -409,20 +408,21 @@ fun HomeScreen(
                         },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                    fontWeight = FontWeight.Light,
+                    fontWeight = FontWeight.Light
                 )
             }
         }
         if (isCommentBottomSheetTrue.value) {
             CommentModalBottomSheet(
                 modifier = Modifier,
-                closeSheet = { isCommentBottomSheetTrue.value = false })
+                closeSheet = { isCommentBottomSheetTrue.value = false }
+            )
         }
     }
 }
 
 // bounceClick
-//TODO supperessLint 수정할것
+// TODO supperessLint 수정할것
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 private fun Modifier.bounceClick(
     scaleDown: Float = 0.30f,
@@ -480,7 +480,8 @@ private fun CommentModalBottomSheet(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.BottomEnd
+            modifier = Modifier.fillMaxHeight(),
+            contentAlignment = Alignment.BottomEnd
         ) {
             Column(modifier = Modifier.align(Alignment.TopStart)) {
                 Row(

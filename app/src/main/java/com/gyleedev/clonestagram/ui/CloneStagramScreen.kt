@@ -123,7 +123,6 @@ fun CloneStagramScreen(
         bottomBar = { BottomNavigation(navController = navController, modifier = Modifier) },
         modifier = Modifier.fillMaxSize()
     ) {
-
         NavHost(
             navController = navController,
             startDestination = BottomNavItem.Home.screenRoute,
