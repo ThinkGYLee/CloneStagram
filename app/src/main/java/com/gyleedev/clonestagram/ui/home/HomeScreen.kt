@@ -25,18 +25,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -70,6 +74,10 @@ fun HomeScreen(
         mutableStateOf(false)
     }
     val isBookMarkTrue = remember {
+        mutableStateOf(false)
+    }
+
+    val isCommentBottomSheetTrue = remember {
         mutableStateOf(false)
     }
 
@@ -111,13 +119,15 @@ fun HomeScreen(
                 scrollBehavior = verticalScrollBehavior
             )
         },
-        modifier = modifier.nestedScroll(verticalScrollBehavior.nestedScrollConnection)
+        modifier = modifier
+            .fillMaxSize()
+            .nestedScroll(verticalScrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             // story row
             Row(
@@ -127,64 +137,87 @@ fun HomeScreen(
                     .horizontalScroll(rememberScrollState()),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
+                Column(
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(end = 20.dp)
+                        .padding(end = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icons8_test_account_96),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center)
-                    )
-                    Box(modifier = Modifier.align(Alignment.BottomEnd)) {
-                        Canvas(modifier = Modifier.background(Color.White), onDraw = {
-                            drawCircle(
-                                color = Color.White,
-                                radius = 8.dp.toPx(),
-                                center = Offset(12.dp.toPx(), 12.dp.toPx())
-                            )
-                        })
-                        Icon(
-                            imageVector = Icons.Filled.AddCircle,
-                            contentDescription = null,
-                            tint = Color.Blue,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
-                for (i in 0..6) {
                     Box(
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(end = 20.dp)
-                            .border(
-                                width = 4.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color.Yellow, Color.Red),
-                                    start = Offset(0f, 0f),
-                                    end = Offset(180f, 180f)
-                                ),
-                                shape = CircleShape
-                            )
+                            .padding(10.dp)
                     ) {
-                        Box(
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_96),
+                            contentDescription = null,
                             modifier = Modifier
-                                .wrapContentSize()
-                                .padding(8.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.icons8_test_account_96),
+                                .size(72.dp)
+                                .align(Alignment.Center)
+                        )
+                        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                            Canvas(modifier = Modifier.background(Color.White), onDraw = {
+                                drawCircle(
+                                    color = Color.White,
+                                    radius = 8.dp.toPx(),
+                                    center = Offset(12.dp.toPx(), 12.dp.toPx())
+                                )
+                            })
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.Center)
-
+                                tint = Color.Blue,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "내 스토리",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                    )
+                }
+                for (i in 0..6) {
+
+                    Column(modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(end = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Box(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .border(
+                                    width = 3.dp,
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(Color.Yellow, Color.Red),
+                                        start = Offset(0f, 0f),
+                                        end = Offset(180f, 180f)
+                                    ),
+                                    shape = CircleShape
+                                )
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(7.dp)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.icons8_test_account_96),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(72.dp)
+                                        .align(Alignment.Center)
+
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "내 스토리",
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier
+                        )
+                    }
+
                 }
             }
             // 게시물
@@ -203,7 +236,7 @@ fun HomeScreen(
                             .wrapContentSize()
                             .padding(start = 16.dp, end = 20.dp)
                             .border(
-                                width = 2.dp,
+                                width = 1.5.dp,
                                 brush = Brush.linearGradient(
                                     colors = listOf(Color.Yellow, Color.Red),
                                     start = Offset(0f, 0f),
@@ -220,7 +253,7 @@ fun HomeScreen(
                             Image(
                                 painter = painterResource(id = R.drawable.icons8_test_account_96),
                                 contentDescription = null,
-                                modifier = Modifier.size(48.dp)
+                                modifier = Modifier.size(36.dp)
                             )
                         }
                     }
@@ -267,7 +300,7 @@ fun HomeScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(start = 20.dp)
-                                .size(28.dp)
+                                .size(24.dp)
                                 .bounceClick(
                                     onClick = {},
                                     onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
@@ -280,7 +313,7 @@ fun HomeScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(start = 20.dp)
-                                .size(28.dp)
+                                .size(24.dp)
                                 .bounceClick(
                                     onClick = {},
                                     onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
@@ -294,14 +327,14 @@ fun HomeScreen(
                         contentDescription = null,
                         modifier = Modifier
                             .padding(start = 20.dp)
-                            .size(28.dp)
+                            .size(24.dp)
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.instagram_share_13423),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(start = 20.dp)
-                            .size(28.dp)
+                            .size(24.dp)
                     )
                     Spacer(modifier = Modifier.weight(10f))
                     if (isBookMarkTrue.value) {
@@ -310,7 +343,7 @@ fun HomeScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(end = 12.dp)
-                                .size(28.dp)
+                                .size(24.dp)
                                 .bounceClick(
                                     onClick = {},
                                     onClickEnd = { isBookMarkTrue.value = !isBookMarkTrue.value }
@@ -322,7 +355,7 @@ fun HomeScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(end = 12.dp)
-                                .size(28.dp)
+                                .size(24.dp)
                                 .bounceClick(
                                     onClick = {},
                                     onClickEnd = { isBookMarkTrue.value = !isBookMarkTrue.value }
@@ -331,8 +364,11 @@ fun HomeScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("좋아요 3658개", modifier = Modifier.padding(start = 20.dp))
-                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "좋아요 3658개", modifier = Modifier
+                        .padding(start = 20.dp)
+                )
+                Spacer(modifier = Modifier.height(2.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         "think_gy_lee",
@@ -345,11 +381,33 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "댓글 2개 모두 보기",
-                    modifier = Modifier.padding(start = 20.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Light
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .clickable {
+                            isCommentBottomSheetTrue.value = true
+                        },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    fontWeight = FontWeight.Light,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "2시간 전",
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .clickable {
+                            isCommentBottomSheetTrue.value = true
+                        },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    fontWeight = FontWeight.Light,
                 )
             }
+        }
+        if (isCommentBottomSheetTrue.value) {
+            CommentModalBottomSheet(
+                modifier = modifier,
+                closeSheet = { isCommentBottomSheetTrue.value = false })
         }
     }
 }
@@ -395,4 +453,115 @@ private fun Modifier.bounceClick(
         ) {
             onClick()
         }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CommentModalBottomSheet(
+    modifier: Modifier,
+    closeSheet: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState()
+
+    ModalBottomSheet(
+        onDismissRequest = { closeSheet() },
+        sheetState = sheetState,
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        modifier = modifier
+    ) {
+        Column(modifier = Modifier) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(text = "댓글")
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            HorizontalDivider(
+                thickness = 0.125.dp
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 16.dp, end = 20.dp)
+                        .border(
+                            width = 2.dp,
+                            brush = Brush.linearGradient(
+                                colors = listOf(Color.Yellow, Color.Red),
+                                start = Offset(0f, 0f),
+                                end = Offset(70f, 70f)
+                            ),
+                            shape = CircleShape
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_96),
+                            contentDescription = null,
+                            modifier = Modifier.size(40.dp)
+                        )
+                    }
+                }
+                Column(
+                    modifier = Modifier.wrapContentSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row {
+                        Text(
+                            "think_gy_lee",
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "2일",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Text(
+                            " ・ ",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Text(
+                            "작성자",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        "I can't wait for the New Android Os !",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Spacer(modifier = Modifier.weight(5f))
+
+                Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "6391",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+
+            }
+        }
+    }
 }
