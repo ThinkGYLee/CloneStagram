@@ -1,5 +1,6 @@
 package com.gyleedev.clonestagram.ui.home
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -30,6 +32,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -56,6 +59,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.gyleedev.clonestagram.R
 import com.skydoves.landscapist.ImageOptions
@@ -140,7 +144,9 @@ fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(end = 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+                        .padding(end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Box(
                         modifier = Modifier
@@ -179,9 +185,12 @@ fun HomeScreen(
                 }
                 for (i in 0..6) {
 
-                    Column(modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(end = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(end = 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Box(
                             modifier = Modifier
                                 .wrapContentSize()
@@ -406,14 +415,15 @@ fun HomeScreen(
         }
         if (isCommentBottomSheetTrue.value) {
             CommentModalBottomSheet(
-                modifier = modifier,
+                modifier = Modifier,
                 closeSheet = { isCommentBottomSheetTrue.value = false })
         }
     }
 }
 
 // bounceClick
-
+//TODO supperessLint 수정할것
+@SuppressLint("ModifierFactoryUnreferencedReceiver")
 private fun Modifier.bounceClick(
     scaleDown: Float = 0.30f,
     onClick: () -> Unit,
@@ -469,98 +479,129 @@ private fun CommentModalBottomSheet(
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         modifier = modifier
     ) {
-        Column(modifier = Modifier) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "댓글")
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            HorizontalDivider(
-                thickness = 0.125.dp
-            )
+        Box(
+            modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.BottomEnd
+        ) {
+            Column(modifier = Modifier.align(Alignment.TopStart)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "댓글")
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                HorizontalDivider(
+                    thickness = 0.125.dp
+                )
 
-            Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(start = 16.dp, end = 20.dp)
-                        .border(
-                            width = 2.dp,
-                            brush = Brush.linearGradient(
-                                colors = listOf(Color.Yellow, Color.Red),
-                                start = Offset(0f, 0f),
-                                end = Offset(70f, 70f)
-                            ),
-                            shape = CircleShape
-                        )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Box(
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(4.dp)
+                            .padding(start = 16.dp, end = 20.dp)
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.linearGradient(
+                                    colors = listOf(Color.Yellow, Color.Red),
+                                    start = Offset(0f, 0f),
+                                    end = Offset(70f, 70f)
+                                ),
+                                shape = CircleShape
+                            )
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icons8_test_account_96),
-                            contentDescription = null,
-                            modifier = Modifier.size(40.dp)
-                        )
+                        Box(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(4.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.icons8_test_account_96),
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
                     }
-                }
-                Column(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Row {
+                    Column(
+                        modifier = Modifier.wrapContentSize(),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Row {
+                            Text(
+                                "think_gy_lee",
+                                fontWeight = FontWeight.SemiBold,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                "2일",
+                                fontWeight = FontWeight.ExtraLight,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                            Text(
+                                " ・ ",
+                                fontWeight = FontWeight.ExtraLight,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                            Text(
+                                "작성자",
+                                fontWeight = FontWeight.ExtraLight,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "think_gy_lee",
-                            fontWeight = FontWeight.SemiBold,
+                            "I can't wait for the New Android Os !",
                             style = MaterialTheme.typography.bodyMedium
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            "2일",
-                            fontWeight = FontWeight.ExtraLight,
-                            style = MaterialTheme.typography.labelMedium
+                    }
+                    Spacer(modifier = Modifier.weight(5f))
+
+                    Column(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            " ・ ",
-                            fontWeight = FontWeight.ExtraLight,
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                        Text(
-                            "작성자",
-                            fontWeight = FontWeight.ExtraLight,
-                            style = MaterialTheme.typography.labelMedium
+                            text = "6391",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        "I can't wait for the New Android Os !",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Spacer(modifier = Modifier.width(8.dp))
                 }
-                Spacer(modifier = Modifier.weight(5f))
-
-                Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.heart_svgrepo_com),
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "6391",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                    )
+            }
+            BottomAppBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset {
+                        IntOffset(
+                            x = 0,
+                            y = -sheetState
+                                .requireOffset()
+                                .toInt()
+                        )
+                    },
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            ) {
+                Column {
+                    Row {
+                        Text(text = "Close")
+                    }
+                    Row {
+                        Text(text = "Close")
+                    }
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-
             }
         }
     }
