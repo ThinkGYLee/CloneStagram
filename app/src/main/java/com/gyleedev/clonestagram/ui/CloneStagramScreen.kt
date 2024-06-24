@@ -11,9 +11,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
@@ -122,8 +121,8 @@ fun CloneStagramScreen(
 ) {
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController, modifier = Modifier) },
-        modifier = Modifier
-    ) { innerPadding ->
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         NavHost(
             navController = navController,
@@ -131,8 +130,7 @@ fun CloneStagramScreen(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
             modifier = Modifier
-                .padding(bottom = innerPadding.calculateBottomPadding())
-                .statusBarsPadding()
+
         ) {
             composable(route = BottomNavItem.Home.screenRoute) {
                 HomeScreen(modifier = Modifier.fillMaxSize())
@@ -173,7 +171,7 @@ fun CloneStagramScreen(
                         )
                     ) + slideOutOfContainer(
                         animationSpec = tween(300, easing = EaseOut),
-                        towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        towards = AnimatedContentTransitionScope.SlideDirection.End
                     )
                 }
             ) {
@@ -197,7 +195,7 @@ fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
         BottomNavItem.Setting
     )
     NavigationBar(
-        modifier = modifier,
+        modifier = modifier.wrapContentSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
