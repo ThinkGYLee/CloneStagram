@@ -94,4 +94,8 @@ dependencies {
 
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.placeholder)
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.savestate)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }
