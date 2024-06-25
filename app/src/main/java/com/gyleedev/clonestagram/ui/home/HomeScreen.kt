@@ -69,6 +69,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -693,7 +694,7 @@ private fun CommentItem(
     Column(modifier = modifier.padding(vertical = 4.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start
         ) {
             Box(
                 modifier = Modifier
@@ -754,7 +755,7 @@ private fun CommentItem(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            Spacer(modifier = Modifier.weight(5f))
+            Spacer(modifier = Modifier.weight(10f))
 
             Column(
                 modifier = Modifier,
@@ -770,10 +771,11 @@ private fun CommentItem(
                 Text(
                     text = "${item.heartCount}",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    modifier = Modifier.sizeIn(28.dp),
+                    textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
