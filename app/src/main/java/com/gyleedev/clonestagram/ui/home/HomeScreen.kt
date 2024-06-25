@@ -3,6 +3,7 @@ package com.gyleedev.clonestagram.ui.home
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,15 +31,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text2.BasicTextField2
+import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text2.input.insert
+import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -58,6 +66,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -174,7 +183,7 @@ fun HomeScreen(
                             Icon(
                                 imageVector = Icons.Filled.AddCircle,
                                 contentDescription = null,
-                                tint = Color.Blue,
+                                tint = colorResource(id = R.color.facebook_blue),
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -469,10 +478,10 @@ private fun Modifier.bounceClick(
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun CommentModalBottomSheet(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     closeSheet: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -488,6 +497,7 @@ private fun CommentModalBottomSheet(
             )
         )
     }
+    val comment = rememberTextFieldState()
 
     ModalBottomSheet(
         onDismissRequest = { closeSheet() },
@@ -496,12 +506,27 @@ private fun CommentModalBottomSheet(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(bottom = 20.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
+            Column(modifier = Modifier.align(Alignment.TopStart)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "댓글")
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                HorizontalDivider(
+                    thickness = 0.125.dp
+                )
 
-            commentList.forEach {
-                CommentItem(item = it, modifier = Modifier.align(Alignment.TopStart))
+                Spacer(modifier = Modifier.height(20.dp))
+                commentList.forEach {
+                    CommentItem(item = it, modifier = Modifier)
+                }
             }
 
             BottomAppBar(
@@ -517,12 +542,132 @@ private fun CommentModalBottomSheet(
                     },
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow
             ) {
-                Column {
-                    Row {
-                        Text(text = "Close")
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 80.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly
+                    ) {
+                        Text(
+                            text = "❤️",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "❤️"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "✨",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "✨"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "👍",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "👍"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "👏",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "👏"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😭",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😭"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😍",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😍"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😮",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😮"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😂",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😂"
+                                    )
+                                }
+                            }
+                        )
                     }
-                    Row {
-                        Text(text = "Close")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_48),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(48.dp)
+                                .width(48.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ReplyTextField(
+                            replyText = comment,
+                            replyTextHint = "think_gy_lee에게 댓글 쓰기",
+                            onReply = {},
+                            modifier = Modifier.fillMaxHeight()
+                        )
                     }
                 }
             }
@@ -536,7 +681,7 @@ data class CommentInformation(
     val writtenHourAgo: Int,
     val isWrittenByAuthor: Boolean,
     val content: String,
-    val heartCount: Int,
+    val heartCount: Int
 )
 
 @Composable
@@ -545,19 +690,6 @@ private fun CommentItem(
     modifier: Modifier
 ) {
     Column(modifier = modifier) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "댓글")
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        HorizontalDivider(
-            thickness = 0.125.dp
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -643,4 +775,54 @@ private fun CommentItem(
             Spacer(modifier = Modifier.width(8.dp))
         }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ReplyTextField(
+    replyText: TextFieldState,
+    replyTextHint: String,
+    onReply: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BasicTextField2(
+        modifier = modifier.fillMaxWidth(),
+        state = replyText,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+        decorator = { innerTextField ->
+            Box(modifier = Modifier) {
+                if (replyText.text.isEmpty()) {
+                    Text(
+                        text = replyTextHint,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color(0xFF848484),
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .wrapContentSize()
+                    )
+                }
+                Row(modifier = Modifier.align(Alignment.CenterStart)) {
+                    innerTextField()
+                }
+                if (replyText.text.isNotEmpty()) {
+                    FilledIconButton(
+                        onClick = { onReply(replyText.text.toString()) },
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = colorResource(
+                                id = R.color.facebook_blue
+                            )
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.arrow_upward_alt_24dp_fill0_wght400_grad0_opsz24),
+                            contentDescription = "Reply Icon",
+                            tint = Color.White,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    )
 }
