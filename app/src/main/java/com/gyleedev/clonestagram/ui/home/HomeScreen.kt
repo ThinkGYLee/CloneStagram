@@ -71,6 +71,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyleedev.clonestagram.R
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
@@ -81,7 +83,8 @@ import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier
+    modifier: Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val isHeartTrue = remember {
@@ -94,6 +97,8 @@ fun HomeScreen(
     val isCommentBottomSheetTrue = remember {
         mutableStateOf(false)
     }
+
+    val comments = homeViewModel.commentList.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -400,7 +405,7 @@ fun HomeScreen(
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    "댓글 2개 모두 보기",
+                    "댓글 ${comments.value.size}개 모두 보기",
                     modifier = Modifier
                         .padding(start = 20.dp)
                         .clickable {
@@ -428,7 +433,11 @@ fun HomeScreen(
         if (isCommentBottomSheetTrue.value) {
             CommentModalBottomSheet(
                 modifier = Modifier,
-                closeSheet = { isCommentBottomSheetTrue.value = false }
+                comments = comments.value,
+                closeSheet = { isCommentBottomSheetTrue.value = false },
+                onAddComment = {
+                    homeViewModel.addComment(it)
+                }
             )
         }
     }
@@ -482,21 +491,11 @@ private fun Modifier.bounceClick(
 @Composable
 private fun CommentModalBottomSheet(
     modifier: Modifier = Modifier,
+    comments: List<CommentInformation>,
+    onAddComment: (String) -> Unit,
     closeSheet: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    val commentList = remember {
-        mutableListOf(
-            CommentInformation(
-                userId = "think_gy_lee",
-                userImage = R.drawable.icons8_test_account_48,
-                writtenHourAgo = 2,
-                content = "I can't wait for the New Android Os !",
-                heartCount = 3621,
-                isWrittenByAuthor = true
-            )
-        )
-    }
     val comment = rememberTextFieldState()
 
     ModalBottomSheet(
@@ -524,7 +523,7 @@ private fun CommentModalBottomSheet(
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
-                commentList.forEach {
+                comments.forEach {
                     CommentItem(item = it, modifier = Modifier)
                 }
             }
@@ -665,7 +664,9 @@ private fun CommentModalBottomSheet(
                         ReplyTextField(
                             replyText = comment,
                             replyTextHint = "think_gy_lee에게 댓글 쓰기",
-                            onReply = {},
+                            onReply = {
+                                onAddComment(comment.text.toString())
+                            },
                             modifier = Modifier.fillMaxHeight()
                         )
                     }
@@ -689,7 +690,7 @@ private fun CommentItem(
     item: CommentInformation,
     modifier: Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(vertical = 4.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
