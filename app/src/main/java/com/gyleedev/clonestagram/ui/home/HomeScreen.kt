@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -506,9 +507,7 @@ private fun CommentModalBottomSheet(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(bottom = 20.dp),
+            modifier = Modifier.fillMaxHeight(),
             contentAlignment = Alignment.BottomEnd
         ) {
             Column(modifier = Modifier.align(Alignment.TopStart)) {
@@ -789,7 +788,7 @@ fun ReplyTextField(
     modifier: Modifier = Modifier
 ) {
     BasicTextField2(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().imePadding(),
         state = replyText,
         textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         decorator = { innerTextField ->
