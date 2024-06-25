@@ -476,6 +476,18 @@ private fun CommentModalBottomSheet(
     closeSheet: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
+    val commentList = remember {
+        mutableListOf(
+            CommentInformation(
+                userId = "think_gy_lee",
+                userImage = R.drawable.icons8_test_account_48,
+                writtenHourAgo = 2,
+                content = "I can't wait for the New Android Os !",
+                heartCount = 3621,
+                isWrittenByAuthor = true
+            )
+        )
+    }
 
     ModalBottomSheet(
         onDismissRequest = { closeSheet() },
@@ -487,105 +499,11 @@ private fun CommentModalBottomSheet(
             modifier = Modifier.fillMaxHeight(),
             contentAlignment = Alignment.BottomEnd
         ) {
-            Column(modifier = Modifier.align(Alignment.TopStart)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "댓글")
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                HorizontalDivider(
-                    thickness = 0.125.dp
-                )
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(start = 16.dp, end = 20.dp)
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color.Yellow, Color.Red),
-                                    start = Offset(0f, 0f),
-                                    end = Offset(70f, 70f)
-                                ),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(4.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.icons8_test_account_96),
-                                contentDescription = null,
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
-                    }
-                    Column(
-                        modifier = Modifier.wrapContentSize(),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Row {
-                            Text(
-                                "think_gy_lee",
-                                fontWeight = FontWeight.SemiBold,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                "2일",
-                                fontWeight = FontWeight.ExtraLight,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                            Text(
-                                " ・ ",
-                                fontWeight = FontWeight.ExtraLight,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                            Text(
-                                "작성자",
-                                fontWeight = FontWeight.ExtraLight,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            "I can't wait for the New Android Os !",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(5f))
-
-                    Column(
-                        modifier = Modifier,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.heart_svgrepo_com),
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "6391",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
+            commentList.forEach {
+                CommentItem(item = it, modifier = Modifier.align(Alignment.TopStart))
             }
+
             BottomAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -608,6 +526,121 @@ private fun CommentModalBottomSheet(
                     }
                 }
             }
+        }
+    }
+}
+
+data class CommentInformation(
+    val userImage: Int,
+    val userId: String,
+    val writtenHourAgo: Int,
+    val isWrittenByAuthor: Boolean,
+    val content: String,
+    val heartCount: Int,
+)
+
+@Composable
+private fun CommentItem(
+    item: CommentInformation,
+    modifier: Modifier
+) {
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "댓글")
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        HorizontalDivider(
+            thickness = 0.125.dp
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(start = 16.dp, end = 20.dp)
+                    .border(
+                        width = 2.dp,
+                        brush = Brush.linearGradient(
+                            colors = listOf(Color.Yellow, Color.Red),
+                            start = Offset(0f, 0f),
+                            end = Offset(70f, 70f)
+                        ),
+                        shape = CircleShape
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(4.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = item.userImage),
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier.wrapContentSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row {
+                    Text(
+                        item.userId,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "${item.writtenHourAgo}일전",
+                        fontWeight = FontWeight.ExtraLight,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    Text(
+                        " ・ ",
+                        fontWeight = FontWeight.ExtraLight,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    Text(
+                        "작성자",
+                        fontWeight = FontWeight.ExtraLight,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    item.content,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Spacer(modifier = Modifier.weight(5f))
+
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "${item.heartCount}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
