@@ -775,6 +775,7 @@ private fun CommentItem(
                     textAlign = TextAlign.Center
                 )
             }
+            Spacer(modifier = Modifier.width(12.dp))
         }
     }
 }
@@ -788,7 +789,9 @@ fun ReplyTextField(
     modifier: Modifier = Modifier
 ) {
     BasicTextField2(
-        modifier = modifier.fillMaxWidth().imePadding(),
+        modifier = modifier
+            .fillMaxWidth()
+            .imePadding(),
         state = replyText,
         textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         decorator = { innerTextField ->
