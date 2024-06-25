@@ -1,6 +1,5 @@
 package com.gyleedev.clonestagram.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -11,10 +10,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
@@ -117,7 +117,6 @@ sealed interface BottomNavIconTypes {
     data object BottomNavNoIcon : BottomNavIconTypes
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CloneStagramScreen(
     navController: NavHostController = rememberNavController()
@@ -125,13 +124,15 @@ fun CloneStagramScreen(
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController, modifier = Modifier) },
         modifier = Modifier.fillMaxSize()
-    ) {
+    ) { paddingValue ->
         NavHost(
             navController = navController,
             startDestination = BottomNavItem.Home.screenRoute,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
             modifier = Modifier
+                .padding(paddingValue)
+                .consumeWindowInsets(paddingValue)
         ) {
             composable(route = BottomNavItem.Home.screenRoute) {
                 HomeScreen(modifier = Modifier.fillMaxSize())
@@ -196,7 +197,7 @@ fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
         BottomNavItem.Setting
     )
     NavigationBar(
-        modifier = modifier.wrapContentSize(),
+        modifier = modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
