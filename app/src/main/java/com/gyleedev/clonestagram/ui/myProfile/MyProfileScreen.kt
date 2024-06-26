@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +13,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
@@ -60,17 +63,21 @@ fun MyProfileScreen(
                     scrolledContainerColor = TopAppBarDefaults.topAppBarColors().containerColor
                 ),
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Outlined.Lock, contentDescription = null)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Lock,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "think_gy_lee")
                         Spacer(modifier = Modifier.width(8.dp))
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Outlined.KeyboardArrowDown,
-                                contentDescription = null
-                            )
-                        }
+                        Icon(
+                            imageVector = Icons.Outlined.KeyboardArrowDown,
+                            contentDescription = null
+                        )
                     }
                 },
                 actions = {
@@ -78,21 +85,21 @@ fun MyProfileScreen(
                         Icon(
                             painter = painterResource(id = R.drawable._4px_threads__app__logo_svg),
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icons8_add_100),
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Outlined.Menu,
                             contentDescription = null,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 },
@@ -107,7 +114,7 @@ fun MyProfileScreen(
                 .padding(innerPadding)
                 .consumeWindowInsets(innerPadding)
         ) {
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(16.dp))
@@ -129,7 +136,7 @@ fun MyProfileScreen(
                                 painter = painterResource(id = R.drawable.profile),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(88.dp)
+                                    .size(80.dp)
                                     .align(Alignment.Center)
                             )
 
@@ -176,7 +183,7 @@ fun MyProfileScreen(
                     Canvas(modifier = Modifier.background(Color.White), onDraw = {
                         drawCircle(
                             color = Color.DarkGray.copy(alpha = 0.6f),
-                            radius = 44.dp.toPx(),
+                            radius = 40.dp.toPx(),
                             center = Offset(0.dp.toPx(), 0.dp.toPx())
                         )
                     })
@@ -207,7 +214,7 @@ fun MyProfileScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -215,7 +222,7 @@ fun MyProfileScreen(
             ) {
                 Text(text = "이금용", style = MaterialTheme.typography.bodyMedium)
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,19 +230,21 @@ fun MyProfileScreen(
             ) {
                 FilledTonalButton(
                     onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.height(36.dp)
+                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .heightIn(max = 30.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable._4px_threads__app__logo_svg),
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(12.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "think_gy_lee", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "think_gy_lee", style = MaterialTheme.typography.labelMedium)
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -243,12 +252,14 @@ fun MyProfileScreen(
             ) {
                 Text(text = "이금용", style = MaterialTheme.typography.bodyMedium)
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.padding(horizontal = 16.dp)) {
                 FilledTonalButton(
                     onClick = { /*TODO*/ },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(max = 32.dp),
+                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(text = "프로필 편집")
@@ -256,8 +267,10 @@ fun MyProfileScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 FilledTonalButton(
                     onClick = { /*TODO*/ },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(max = 32.dp),
+                    colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(text = "프로필 공유")
@@ -265,10 +278,12 @@ fun MyProfileScreen(
                 Spacer(modifier = Modifier.width(12.dp))
                 FilledTonalIconButton(
                     onClick = { /*TODO*/ },
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .sizeIn(maxHeight = 32.dp, maxWidth = 32.dp),
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
                         containerColor =
-                        MaterialTheme.colorScheme.surfaceContainer
+                        MaterialTheme.colorScheme.surfaceContainerHigh
                     ),
                     shape = RoundedCornerShape(12.dp)
                 ) {
