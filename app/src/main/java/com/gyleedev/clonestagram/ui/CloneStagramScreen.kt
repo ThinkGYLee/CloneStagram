@@ -41,7 +41,7 @@ import com.gyleedev.clonestagram.ui.detail.DetailScreen
 import com.gyleedev.clonestagram.ui.detail.ReelsScreen
 import com.gyleedev.clonestagram.ui.home.HomeScreen
 import com.gyleedev.clonestagram.ui.search.SearchScreen
-import com.gyleedev.clonestagram.ui.setting.SettingScreen
+import com.gyleedev.clonestagram.ui.myProfile.MyProfileScreen
 import com.gyleedev.clonestagram.ui.upload.UploadScreen
 
 sealed class BottomNavItem(
@@ -181,7 +181,7 @@ fun CloneStagramScreen(
             }
 
             composable(route = BottomNavItem.Setting.screenRoute) {
-                SettingScreen(modifier = Modifier.fillMaxSize())
+                MyProfileScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
