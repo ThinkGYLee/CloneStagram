@@ -35,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -62,7 +63,11 @@ fun MyProfileScreen(
         mutableIntStateOf(0)
     }
 
-    val tabList = listOf(TabIcons(R.drawable.icons8__96, R.drawable.icons8__64))
+    val tabList = listOf(
+        TabIcons(R.drawable.icons8__96, R.drawable.icons8__64),
+        TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
+        TabIcons(R.drawable.instagram_tag_icon, R.drawable.instagram_tag_icon)
+    )
 
     Scaffold(
         topBar = {
@@ -297,7 +302,12 @@ fun MyProfileScreen(
                 }
             }
             TabRow(selectedTabIndex = tabIndex) {
-
+                tabList.forEach { item->
+                    Tab(
+                        selected = tabIndex == tabList.indexOf(item),
+                        onClick = {  },
+                    )
+                }
             }
 
         }
