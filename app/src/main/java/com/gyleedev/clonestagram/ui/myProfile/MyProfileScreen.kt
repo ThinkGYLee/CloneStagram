@@ -35,17 +35,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.gyleedev.clonestagram.R
 
@@ -55,6 +58,11 @@ fun MyProfileScreen(
     modifier: Modifier
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val tabIndex by remember {
+        mutableIntStateOf(0)
+    }
+
+    val tabList = listOf(TabIcons(R.drawable.icons8__96, R.drawable.icons8__64))
 
     Scaffold(
         topBar = {
@@ -142,12 +150,7 @@ fun MyProfileScreen(
 
                             Box(
                                 modifier = Modifier
-                                    .offset {
-                                        IntOffset(
-                                            0,
-                                            36
-                                        )
-                                    }
+                                    .offset(y = 12.dp)
                                     .background(
                                         color = colorResource(id = R.color.facebook_blue),
                                         shape = RoundedCornerShape(4.dp)
@@ -214,7 +217,7 @@ fun MyProfileScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -262,7 +265,7 @@ fun MyProfileScreen(
                     colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = "프로필 편집")
+                    Text(text = "프로필 편집", style = MaterialTheme.typography.bodySmall)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 FilledTonalButton(
@@ -271,9 +274,9 @@ fun MyProfileScreen(
                         .weight(1f)
                         .heightIn(max = 32.dp),
                     colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = "프로필 공유")
+                    Text(text = "프로필 공유", style = MaterialTheme.typography.bodySmall)
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 FilledTonalIconButton(
@@ -285,7 +288,7 @@ fun MyProfileScreen(
                         containerColor =
                         MaterialTheme.colorScheme.surfaceContainerHigh
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.icons8_add_friend_48),
@@ -293,6 +296,15 @@ fun MyProfileScreen(
                     )
                 }
             }
+            TabRow(selectedTabIndex = tabIndex) {
+
+            }
+
         }
     }
 }
+
+data class TabIcons(
+    val selectedIcon: Int,
+    val unselectedIcon: Int
+)
