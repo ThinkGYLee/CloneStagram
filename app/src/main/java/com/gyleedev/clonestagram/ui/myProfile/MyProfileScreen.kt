@@ -1,16 +1,20 @@
 package com.gyleedev.clonestagram.ui.myProfile
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -20,6 +24,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,36 +46,45 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.gyleedev.clonestagram.R
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.coil.CoilImage
+import com.skydoves.landscapist.components.rememberImageComponent
+import com.skydoves.landscapist.placeholder.shimmer.Shimmer
+import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MyProfileScreen(
     modifier: Modifier
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val tabIndex = remember {
-        mutableIntStateOf(0)
-    }
 
     val tabList = listOf(
         TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
         TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
         TabIcons(R.drawable.instagram_tag_icon, R.drawable.instagram_tag_icon)
     )
+    val pagerState = rememberPagerState {
+        tabList.size
+    }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -77,7 +95,8 @@ fun MyProfileScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { }) {
+                        modifier = Modifier.clickable { }
+                    ) {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
                             contentDescription = null,
@@ -301,35 +320,43 @@ fun MyProfileScreen(
                 }
             }
             Spacer(modifier = Modifier.height(28.dp))
-            TabRow(selectedTabIndex = tabIndex.intValue) {
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    Box(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                            .padding(horizontal = 32.dp)
+                            .height(2.dp)
+                            .background(color = MaterialTheme.colorScheme.onSurface)
+                    )
+                }
+            ) {
                 tabList.forEach { item ->
-                    when (tabList.indexOf(item)) {
-                        0 -> {
-                            PictureTab(
-                                isSelected = tabIndex.intValue == tabList.indexOf(item),
-                                item = item,
-                                onClick = { tabIndex.intValue = 0 },
-                                modifier = Modifier
-                            )
-                        }
+                    MyProfileTab(
+                        isSelected = pagerState.currentPage == tabList.indexOf(item),
+                        item = item,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(tabList.indexOf(item))
+                            }
+                        },
+                        modifier = Modifier
+                    )
+                }
+            }
+            HorizontalPager(state = pagerState) {
+                when (pagerState.currentPage) {
+                    0 -> {
+                        MyPhotoGird(modifier = Modifier)
+                    }
 
-                        1 -> {
-                            ReelsTab(
-                                isSelected = tabIndex.intValue == tabList.indexOf(item),
-                                onClick = { tabIndex.intValue = 1 },
-                                item = item,
-                                modifier = Modifier
-                            )
-                        }
+                    1 -> {
+                        MyReelsGird(modifier = Modifier)
+                    }
 
-                        2 -> {
-                            PictureWithMeTab(
-                                isSelected = tabIndex.intValue == tabList.indexOf(item),
-                                onClick = { tabIndex.intValue = 2 },
-                                item = item,
-                                modifier = Modifier
-                            )
-                        }
+                    2 -> {
+                        MediaWithMeGird(modifier = Modifier)
                     }
                 }
             }
@@ -338,7 +365,7 @@ fun MyProfileScreen(
 }
 
 @Composable
-private fun PictureTab(
+private fun MyProfileTab(
     isSelected: Boolean,
     item: TabIcons,
     onClick: () -> Unit,
@@ -349,64 +376,109 @@ private fun PictureTab(
         onClick = { onClick() },
         icon = {
             if (isSelected) {
-                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
+                Icon(
+                    painter = painterResource(id = item.selectedIcon),
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp)
+                )
             } else {
                 Icon(
                     painter = painterResource(id = item.unselectedIcon),
-                    contentDescription = null, modifier = Modifier.size(36.dp)
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         },
-        modifier = modifier.padding(bottom = 20.dp)
+        modifier = modifier.padding(bottom = 8.dp)
     )
 }
 
 @Composable
-private fun ReelsTab(
-    isSelected: Boolean,
-    item: TabIcons,
-    onClick: () -> Unit,
-    modifier: Modifier
-) {
-    Tab(
-        selected = isSelected,
-        onClick = { onClick() },
-        icon = {
-            if (isSelected) {
-                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
-            } else {
-                Icon(
-                    painter = painterResource(id = item.unselectedIcon),
-                    contentDescription = null, modifier = Modifier.size(36.dp)
-                )
-            }
-        },
-        modifier = modifier.padding(bottom = 20.dp)
+fun MyPhotoGird(modifier: Modifier) {
+    val list = listOf(
+        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
     )
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        flingBehavior = ScrollableDefaults.flingBehavior(),
+        modifier = modifier.fillMaxSize()
+    ) {
+        items(list) { item ->
+            CoilImage(
+                imageModel = { item },
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                component = rememberImageComponent {
+                    +ShimmerPlugin(
+                        Shimmer.Flash(
+                            baseColor = Color.White,
+                            highlightColor = Color.LightGray
+                        )
+                    )
+                },
+                modifier = Modifier.sizeIn(minWidth = 128.dp, minHeight = 128.dp)
+            )
+        }
+    }
 }
 
 @Composable
-private fun PictureWithMeTab(
-    isSelected: Boolean,
-    item: TabIcons,
-    onClick: () -> Unit,
-    modifier: Modifier
-) {
-    Tab(
-        selected = isSelected,
-        onClick = { onClick() },
-        icon = {
-            if (isSelected) {
-                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
-            } else {
-                Icon(
-                    painter = painterResource(id = item.unselectedIcon),
-                    contentDescription = null, modifier = Modifier.size(36.dp)
-                )
+fun MyReelsGird(modifier: Modifier) {
+    val list = listOf(1, 2, 3, 4, 5)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        modifier = modifier.fillMaxSize()
+    ) {
+        items(list) { item ->
+            Text(text = item.toString())
+        }
+    }
+}
+
+@Composable
+fun MediaWithMeGird(modifier: Modifier) {
+    val list = emptyList<String>()
+    if (list.isNotEmpty()) {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 128.dp),
+            modifier = modifier.fillMaxSize()
+        ) {
+            items(list) { item ->
+                Text(text = item)
             }
-        },
-        modifier = modifier.padding(bottom = 20.dp)
-    )
+        }
+    } else {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "회원님이 나온 사진 및 동영상",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = "사람들이 회원님을 사진 및 동영상에 태그하면",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "태그된 사진 및 동영상이 여기에 표시됩니다.",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            )
+        }
+    }
 }
 
 data class TabIcons(
