@@ -3,6 +3,7 @@ package com.gyleedev.clonestagram.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gyleedev.clonestagram.R
+import com.gyleedev.clonestagram.ui.public.CommentInformation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
