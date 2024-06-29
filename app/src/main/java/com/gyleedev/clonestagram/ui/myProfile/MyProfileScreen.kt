@@ -41,7 +41,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,12 +58,12 @@ fun MyProfileScreen(
     modifier: Modifier
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val tabIndex by remember {
+    val tabIndex = remember {
         mutableIntStateOf(0)
     }
 
     val tabList = listOf(
-        TabIcons(R.drawable.icons8__96, R.drawable.icons8__64),
+        TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
         TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
         TabIcons(R.drawable.instagram_tag_icon, R.drawable.instagram_tag_icon)
     )
@@ -301,17 +300,113 @@ fun MyProfileScreen(
                     )
                 }
             }
-            TabRow(selectedTabIndex = tabIndex) {
-                tabList.forEach { item->
-                    Tab(
-                        selected = tabIndex == tabList.indexOf(item),
-                        onClick = {  },
-                    )
+            Spacer(modifier = Modifier.height(28.dp))
+            TabRow(selectedTabIndex = tabIndex.intValue) {
+                tabList.forEach { item ->
+                    when (tabList.indexOf(item)) {
+                        0 -> {
+                            PictureTab(
+                                isSelected = tabIndex.intValue == tabList.indexOf(item),
+                                item = item,
+                                onClick = { tabIndex.intValue = 0 },
+                                modifier = Modifier
+                            )
+                        }
+
+                        1 -> {
+                            ReelsTab(
+                                isSelected = tabIndex.intValue == tabList.indexOf(item),
+                                onClick = { tabIndex.intValue = 1 },
+                                item = item,
+                                modifier = Modifier
+                            )
+                        }
+
+                        2 -> {
+                            PictureWithMeTab(
+                                isSelected = tabIndex.intValue == tabList.indexOf(item),
+                                onClick = { tabIndex.intValue = 2 },
+                                item = item,
+                                modifier = Modifier
+                            )
+                        }
+                    }
                 }
             }
-
         }
     }
+}
+
+@Composable
+private fun PictureTab(
+    isSelected: Boolean,
+    item: TabIcons,
+    onClick: () -> Unit,
+    modifier: Modifier
+) {
+    Tab(
+        selected = isSelected,
+        onClick = { onClick() },
+        icon = {
+            if (isSelected) {
+                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
+            } else {
+                Icon(
+                    painter = painterResource(id = item.unselectedIcon),
+                    contentDescription = null, modifier = Modifier.size(36.dp)
+                )
+            }
+        },
+        modifier = modifier.padding(bottom = 20.dp)
+    )
+}
+
+@Composable
+private fun ReelsTab(
+    isSelected: Boolean,
+    item: TabIcons,
+    onClick: () -> Unit,
+    modifier: Modifier
+) {
+    Tab(
+        selected = isSelected,
+        onClick = { onClick() },
+        icon = {
+            if (isSelected) {
+                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
+            } else {
+                Icon(
+                    painter = painterResource(id = item.unselectedIcon),
+                    contentDescription = null, modifier = Modifier.size(36.dp)
+                )
+            }
+        },
+        modifier = modifier.padding(bottom = 20.dp)
+    )
+}
+
+@Composable
+private fun PictureWithMeTab(
+    isSelected: Boolean,
+    item: TabIcons,
+    onClick: () -> Unit,
+    modifier: Modifier
+) {
+    Tab(
+        selected = isSelected,
+        onClick = { onClick() },
+        icon = {
+            if (isSelected) {
+                Icon(painter = painterResource(id = item.selectedIcon), contentDescription = null, modifier = Modifier.size(36.dp))
+            } else {
+                Icon(
+                    painter = painterResource(id = item.unselectedIcon),
+                    contentDescription = null, modifier = Modifier.size(36.dp)
+                )
+            }
+        },
+        modifier = modifier.padding(bottom = 20.dp)
+    )
 }
 
 data class TabIcons(
