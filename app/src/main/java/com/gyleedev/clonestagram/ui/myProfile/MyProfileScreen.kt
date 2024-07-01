@@ -29,8 +29,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Lock
@@ -57,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,8 +77,6 @@ import kotlinx.coroutines.launch
 fun MyProfileScreen(
     modifier: Modifier
 ) {
-    val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     val tabList = listOf(
         TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
         TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
@@ -134,8 +135,7 @@ fun MyProfileScreen(
                         )
                     }
                 },
-                modifier = Modifier,
-                scrollBehavior = verticalScrollBehavior
+                modifier = Modifier
             )
         },
         modifier = modifier
@@ -144,6 +144,7 @@ fun MyProfileScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .consumeWindowInsets(innerPadding)
+                .verticalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -319,7 +320,7 @@ fun MyProfileScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
                 indicator = { tabPositions ->
@@ -379,13 +380,15 @@ private fun MyProfileTab(
                 Icon(
                     painter = painterResource(id = item.selectedIcon),
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
             } else {
                 Icon(
                     painter = painterResource(id = item.unselectedIcon),
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
             }
         },
@@ -401,12 +404,24 @@ fun MyPhotoGird(modifier: Modifier) {
         "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
         "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
         "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
         "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
     )
+    val itemSize = list.size
+    val windowWidth = LocalConfiguration.current.screenWidthDp
+    val maxHeight = windowWidth / 3 * (itemSize / 3)
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         flingBehavior = ScrollableDefaults.flingBehavior(),
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .height(maxHeight.dp)
+            .fillMaxSize(),
+        userScrollEnabled = true
     ) {
         items(list) { item ->
             CoilImage(
@@ -432,9 +447,15 @@ fun MyPhotoGird(modifier: Modifier) {
 @Composable
 fun MyReelsGird(modifier: Modifier) {
     val list = listOf(1, 2, 3, 4, 5)
+    val itemSize = list.size
+    val windowWidth = LocalConfiguration.current.screenWidthDp
+    val maxHeight = windowWidth / 3 * (itemSize / 3)
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .height(maxHeight.dp)
+            .fillMaxSize(),
+        userScrollEnabled = false
     ) {
         items(list) { item ->
             Text(text = item.toString())
@@ -445,10 +466,16 @@ fun MyReelsGird(modifier: Modifier) {
 @Composable
 fun MediaWithMeGird(modifier: Modifier) {
     val list = emptyList<String>()
+    val itemSize = list.size
+    val windowWidth = LocalConfiguration.current.screenWidthDp
+    val maxHeight = windowWidth / 3 * (itemSize / 3)
     if (list.isNotEmpty()) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 128.dp),
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .height(maxHeight.dp)
+                .fillMaxSize(),
+            userScrollEnabled = false
         ) {
             items(list) { item ->
                 Text(text = item)
@@ -460,6 +487,7 @@ fun MediaWithMeGird(modifier: Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Spacer(modifier = Modifier.height(120.dp))
             Text(
                 text = "회원님이 나온 사진 및 동영상",
                 style = MaterialTheme.typography.titleLarge,
