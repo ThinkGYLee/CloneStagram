@@ -58,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
@@ -77,6 +78,8 @@ import kotlinx.coroutines.launch
 fun MyProfileScreen(
     modifier: Modifier
 ) {
+    val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     val tabList = listOf(
         TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
         TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
@@ -135,10 +138,11 @@ fun MyProfileScreen(
                         )
                     }
                 },
-                modifier = Modifier
+                modifier = Modifier,
+                scrollBehavior = verticalScrollBehavior
             )
         },
-        modifier = modifier
+        modifier = modifier.nestedScroll(verticalScrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Column(
             modifier = Modifier
