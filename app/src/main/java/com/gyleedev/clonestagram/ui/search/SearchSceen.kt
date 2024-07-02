@@ -3,16 +3,21 @@ package com.gyleedev.clonestagram.ui.search
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier
 ) {
     Scaffold(
-        topBar = {},
+        topBar = {
+            TopAppBar(title = { /*TODO*/ })
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(modifier = Modifier
