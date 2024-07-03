@@ -38,9 +38,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.gyleedev.clonestagram.R
 import com.gyleedev.clonestagram.ui.detail.DetailScreen
-import com.gyleedev.clonestagram.ui.detail.ReelsScreen
 import com.gyleedev.clonestagram.ui.home.HomeScreen
 import com.gyleedev.clonestagram.ui.myProfile.MyProfileScreen
+import com.gyleedev.clonestagram.ui.reels.ReelsScreen
 import com.gyleedev.clonestagram.ui.search.SearchScreen
 import com.gyleedev.clonestagram.ui.upload.UploadScreen
 
