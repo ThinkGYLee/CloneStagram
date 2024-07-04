@@ -188,7 +188,10 @@ fun CloneStagramScreen(
 }
 
 @Composable
-fun BottomNavigation(navController: NavHostController, modifier: Modifier) {
+fun BottomNavigation(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Search,
