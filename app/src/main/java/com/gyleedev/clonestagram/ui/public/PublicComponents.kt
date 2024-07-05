@@ -17,12 +17,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +52,7 @@ fun PublicItemDetail(
     itemData: ItemData,
     comments: List<CommentInformation>,
     onBottomSheetStateChange: (Boolean) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val isHeartTrue = remember {
         mutableStateOf(itemData.heartBoolean)
@@ -66,52 +67,50 @@ fun PublicItemDetail(
     ) {
         // 게시물 제목
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 16.dp, end = 20.dp)
-                    .border(
-                        width = 1.5.dp,
-                        brush = Brush.linearGradient(
-                            colors = listOf(Color.Yellow, Color.Red),
-                            start = Offset(0f, 0f),
-                            end = Offset(70f, 70f)
-                        ),
-                        shape = CircleShape
-                    )
-            ) {
+            Row {
                 Box(
                     modifier = Modifier
-                        .wrapContentSize()
-                        .padding(4.dp)
+                        .border(
+                            width = 1.5.dp,
+                            brush = Brush.linearGradient(
+                                colors = listOf(Color.Yellow, Color.Red),
+                                start = Offset(0f, 0f),
+                                end = Offset(70f, 70f)
+                            ),
+                            shape = CircleShape
+                        )
                 ) {
-                    Image(
-                        painter = painterResource(id = itemData.icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(36.dp)
+                    Box(modifier = Modifier.padding(4.dp)) {
+                        Image(
+                            painter = painterResource(id = itemData.icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+                Column {
+                    Text(itemData.ownerId, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        itemData.music,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }
-            Column(modifier = Modifier.wrapContentSize()) {
-                Text(itemData.ownerId, fontWeight = FontWeight.SemiBold)
-                Text(
-                    itemData.music,
-                    style = MaterialTheme.typography.labelMedium
+
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Outlined.MoreVert,
+                    contentDescription = null,
+                    modifier = Modifier
                 )
             }
-            Spacer(modifier = Modifier.weight(5f))
-            Icon(
-                imageVector = Icons.Outlined.MoreVert,
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .wrapContentSize()
-                    .padding(end = 8.dp)
-                    .clickable { }
-            )
         }
 
         CoilImage(
@@ -217,25 +216,26 @@ fun PublicItemDetail(
             Text(itemData.content)
         }
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            "댓글 ${comments.size}개 모두 보기",
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .clickable {
-                    onBottomSheetStateChange(true)
-                },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-            fontWeight = FontWeight.Light
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            "2시간 전",
-            modifier = Modifier.padding(start = 20.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-            fontWeight = FontWeight.Light
-        )
+
+        ProvideTextStyle(
+            value = MaterialTheme.typography.bodyMedium
+                .copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    fontWeight = FontWeight.Light
+                )
+        ) {
+            Text(
+                "댓글 ${comments.size}개 모두 보기",
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .clickable { onBottomSheetStateChange(true) }
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                "2시간 전",
+                modifier = Modifier.padding(start = 20.dp)
+            )
+        }
     }
 }
 
