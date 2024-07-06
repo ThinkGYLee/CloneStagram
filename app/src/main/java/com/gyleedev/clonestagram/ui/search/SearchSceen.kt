@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +34,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -68,7 +68,7 @@ import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.placeholder.shimmer.Shimmer
 import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier,
@@ -81,9 +81,6 @@ fun SearchScreen(
     }
 
     val searchedItem by viewModel.searchedList.collectAsStateWithLifecycle()
-
-
-
 
     Scaffold(modifier = modifier) { innerPadding ->
         Column(
@@ -126,7 +123,6 @@ fun SearchScreen(
     }
 }
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchTextField(
@@ -145,9 +141,8 @@ fun SearchTextField(
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
-                    .clickable {
-                        focusManager.clearFocus(force = true)
-                    })
+                    .clickable { focusManager.clearFocus(force = true) }
+            )
             Spacer(modifier = Modifier.width(16.dp))
         }
         BasicTextField2(
@@ -175,7 +170,7 @@ fun SearchTextField(
                     Icon(
                         painter = painterResource(id = R.drawable.search_24dp_fill0_wght600_grad0_opsz24),
                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = alpha),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Box(modifier = Modifier.weight(10f)) {
                         if (searchQuery.text.isEmpty()) {
@@ -248,7 +243,7 @@ fun MyPhotoGird(modifier: Modifier) {
     )
     val itemSize = list.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
-    val maxHeight = windowWidth / 3 * (itemSize / 3) //* 2
+    val maxHeight = windowWidth / 3 * (itemSize / 3) // * 2
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         flingBehavior = ScrollableDefaults.flingBehavior(),
@@ -274,14 +269,9 @@ fun MyPhotoGird(modifier: Modifier) {
                         )
                     )
                 },
-                modifier = Modifier.size(
-                    width = 128.dp,
-                    height = /*if (list.indexOf(item) % 10 == 2 || list.indexOf(item) % 10 == 5) {
-                        256.dp
-                    } else {
-                        128.dp
-                    }*/ 128.dp
-                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
             )
         }
     }
@@ -290,7 +280,7 @@ fun MyPhotoGird(modifier: Modifier) {
 @Composable
 fun SearchedList(
     list: List<SearchedItemData>,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -309,9 +299,9 @@ fun SearchedList(
             )
             Spacer(modifier = Modifier.weight(10f))
             Text(
-                text = "모두 검색", style = MaterialTheme.typography.labelMedium, color = colorResource(
-                    id = R.color.facebook_blue
-                )
+                text = "모두 검색",
+                style = MaterialTheme.typography.labelMedium,
+                color = colorResource(id = R.color.facebook_blue)
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -329,7 +319,6 @@ fun SearchedItem(
 ) {
     val brushModifier = if (searchedItemData.unWatchedStory) {
         Modifier
-            .wrapContentSize()
             .border(
                 width = 2.dp,
                 brush = Brush.linearGradient(
@@ -340,17 +329,14 @@ fun SearchedItem(
                 shape = CircleShape
             )
     } else {
-        Modifier.wrapContentSize()
+        Modifier
     }
-    Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = brushModifier
-        ) {
-            Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(4.dp)
-            ) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(modifier = brushModifier) {
+            Box(modifier = Modifier.padding(4.dp)) {
                 CoilImage(
                     imageModel = { searchedItemData.link },
                     imageOptions = ImageOptions(
@@ -366,9 +352,7 @@ fun SearchedItem(
                         )
                     },
                     modifier = Modifier
-                        .size(
-                            48.dp
-                        )
+                        .size(48.dp)
                         .clip(CircleShape)
                 )
             }
@@ -387,6 +371,7 @@ fun SearchedItem(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
+        // TODO public component에서 한 것 처럼 weight를 사용하지 않고 row의 속성으로 수정
         Spacer(modifier = Modifier.weight(10f))
         Icon(
             imageVector = Icons.Filled.Close,
@@ -403,5 +388,5 @@ data class SearchedItemData(
     val link: String,
     val id: String,
     val status: String,
-    val unWatchedStory: Boolean,
+    val unWatchedStory: Boolean
 )
