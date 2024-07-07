@@ -95,7 +95,7 @@ class SearchViewModel @Inject constructor() : ViewModel() {
                 id = "android",
                 status = "android",
                 unWatchedStory = false
-            ),
+            )
         )
     }
 }
