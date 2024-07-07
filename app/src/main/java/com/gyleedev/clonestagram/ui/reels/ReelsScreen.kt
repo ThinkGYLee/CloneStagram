@@ -45,9 +45,7 @@ import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 fun ReelsScreen(
     modifier: Modifier
 ) {
-    val imageLink = "https://pbs.twimg.com/media/FjYmnWuWYAMk7se.jpg:large"
     Box(modifier = modifier.fillMaxSize()) {
-
         CoilImage(
             imageModel = { imageLink },
             imageOptions = ImageOptions(
@@ -80,7 +78,8 @@ fun ReelsScreen(
             ) {
                 Row(
                     modifier = Modifier
-                        .wrapContentSize(), verticalAlignment = Alignment.CenterVertically
+                        .wrapContentSize(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
@@ -106,7 +105,6 @@ fun ReelsScreen(
                                 modifier = Modifier.size(32.dp)
                             )
                         }
-
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(text = "think_gy_lee", color = Color.White, fontWeight = FontWeight.Bold)
@@ -123,7 +121,6 @@ fun ReelsScreen(
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp)
                         )
                     }
-
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.wrapContentWidth()) {
@@ -141,7 +138,8 @@ fun ReelsScreen(
                             .background(
                                 color = Color.DarkGray.copy(
                                     alpha = 0.4f
-                                ), shape = RoundedCornerShape(16.dp)
+                                ),
+                                shape = RoundedCornerShape(16.dp)
                             )
                     ) {
                         Text(
@@ -158,7 +156,8 @@ fun ReelsScreen(
                             .background(
                                 color = Color.DarkGray.copy(
                                     alpha = 0.4f
-                                ), shape = RoundedCornerShape(16.dp)
+                                ),
+                                shape = RoundedCornerShape(16.dp)
                             )
                     ) {
                         Text(
@@ -175,7 +174,8 @@ fun ReelsScreen(
                             .background(
                                 color = Color.DarkGray.copy(
                                     alpha = 0.4f
-                                ), shape = RoundedCornerShape(16.dp)
+                                ),
+                                shape = RoundedCornerShape(16.dp)
                             )
                     ) {
                         Text(
@@ -247,9 +247,7 @@ fun ReelsScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-
         }
-
     }
 }
 
@@ -285,3 +283,5 @@ fun ReelsTop(
         )
     }
 }
+
+val imageLink = "https://pbs.twimg.com/media/FjYmnWuWYAMk7se.jpg:large"
