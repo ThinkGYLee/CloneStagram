@@ -50,8 +50,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -74,16 +76,13 @@ import com.gyleedev.clonestagram.ui.public.PublicItemDetail
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    val isCommentBottomSheetTrue = remember {
-        mutableStateOf(false)
-    }
-
-    val comments = homeViewModel.commentList.collectAsStateWithLifecycle()
+    var isCommentBottomSheetTrue by remember { mutableStateOf(false) }
+    val comments = viewModel.commentList.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -92,16 +91,14 @@ fun HomeScreen(
                     scrolledContainerColor = TopAppBarDefaults.topAppBarColors().containerColor
                 ),
                 title = {
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.sizeIn(minWidth = 100.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.instagram_text_logo),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.instagram_text_logo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .sizeIn(maxWidth = 100.dp)
+                            .clickable { }
+                    )
                 },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
@@ -139,14 +136,12 @@ fun HomeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp)
-                    .horizontalScroll(rememberScrollState()),
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(end = 20.dp),
+                    modifier = Modifier.wrapContentSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -185,11 +180,11 @@ fun HomeScreen(
                         modifier = Modifier
                     )
                 }
+                Spacer(modifier = Modifier.width(10.dp))
                 for (i in 0..6) {
                     Column(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(end = 20.dp),
+                            .fillMaxHeight(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box(
@@ -227,6 +222,10 @@ fun HomeScreen(
                             modifier = Modifier
                         )
                     }
+
+                    if (i < 6) {
+                        Spacer(modifier = Modifier.width(20.dp))
+                    }
                 }
             }
             // 게시물
@@ -234,18 +233,17 @@ fun HomeScreen(
             PublicItemDetail(
                 itemData = ItemData.initialItem,
                 comments = comments.value,
-                onBottomSheetStateChange = { isCommentBottomSheetTrue.value = true },
-                modifier = Modifier
+                onBottomSheetStateChange = { isCommentBottomSheetTrue = true }
             )
         }
 
-        if (isCommentBottomSheetTrue.value) {
+        if (isCommentBottomSheetTrue) {
             CommentModalBottomSheet(
                 modifier = Modifier,
                 comments = comments.value,
-                closeSheet = { isCommentBottomSheetTrue.value = false },
+                closeSheet = { isCommentBottomSheetTrue = false },
                 onAddComment = {
-                    homeViewModel.addComment(it)
+                    viewModel.addComment(it)
                 }
             )
         }
@@ -255,16 +253,16 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun CommentModalBottomSheet(
-    modifier: Modifier = Modifier,
     comments: List<CommentInformation>,
     onAddComment: (String) -> Unit,
-    closeSheet: () -> Unit
+    closeSheet: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
     val comment = rememberTextFieldState()
 
     ModalBottomSheet(
-        onDismissRequest = { closeSheet() },
+        onDismissRequest = closeSheet,
         sheetState = sheetState,
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         modifier = modifier
@@ -287,7 +285,7 @@ private fun CommentModalBottomSheet(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 comments.forEach {
-                    CommentItem(item = it, modifier = Modifier)
+                    CommentItem(item = it)
                 }
             }
 
@@ -429,8 +427,7 @@ private fun CommentModalBottomSheet(
                             replyTextHint = "think_gy_lee에게 댓글 쓰기",
                             onReply = {
                                 onAddComment(comment.text.toString())
-                            },
-                            modifier = Modifier.fillMaxHeight()
+                            }
                         )
                     }
                 }
@@ -442,7 +439,7 @@ private fun CommentModalBottomSheet(
 @Composable
 private fun CommentItem(
     item: CommentInformation,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(vertical = 4.dp)) {
         Row(
@@ -476,7 +473,6 @@ private fun CommentItem(
                 }
             }
             Column(
-                modifier = Modifier.wrapContentSize(),
                 verticalArrangement = Arrangement.Center
             ) {
                 Row {
@@ -511,7 +507,6 @@ private fun CommentItem(
             Spacer(modifier = Modifier.weight(10f))
 
             Column(
-                modifier = Modifier,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -549,7 +544,7 @@ fun ReplyTextField(
         state = replyText,
         textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         decorator = { innerTextField ->
-            Box(modifier = Modifier) {
+            Box {
                 if (replyText.text.isEmpty()) {
                     Text(
                         text = replyTextHint,
