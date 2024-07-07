@@ -76,18 +76,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MyProfileScreen(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val verticalScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    val tabList = listOf(
-        TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
-        TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
-        TabIcons(R.drawable.instagram_tag_icon, R.drawable.instagram_tag_icon)
-    )
-    val pagerState = rememberPagerState {
-        tabList.size
-    }
+    val pagerState = rememberPagerState { tabList.size }
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -99,7 +92,9 @@ fun MyProfileScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { }
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { }
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
@@ -152,22 +147,23 @@ fun MyProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                Spacer(modifier = Modifier.width(16.dp))
-                Box(modifier = Modifier.wrapContentSize(), Alignment.Center) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(modifier = Modifier, Alignment.Center) {
                     Box(
                         modifier = Modifier
-                            .wrapContentSize()
                             .border(
                                 width = 4.dp,
                                 color = Color.LightGray.copy(alpha = 0.5f),
                                 shape = CircleShape
                             )
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize()
-                        ) {
+                        Box {
                             Image(
                                 painter = painterResource(id = R.drawable.profile),
                                 contentDescription = null,
@@ -228,22 +224,22 @@ fun MyProfileScreen(
                             .align(Alignment.Center)
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "18", fontWeight = FontWeight.Bold)
                     Text(text = "게시물")
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "84", fontWeight = FontWeight.Bold)
                     Text(text = "팔로워")
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "122", fontWeight = FontWeight.Bold)
                     Text(text = "팔로잉")
                 }
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(8.dp))
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -345,23 +341,22 @@ fun MyProfileScreen(
                             coroutineScope.launch {
                                 pagerState.scrollToPage(tabList.indexOf(item))
                             }
-                        },
-                        modifier = Modifier
+                        }
                     )
                 }
             }
             HorizontalPager(state = pagerState) {
                 when (pagerState.currentPage) {
                     0 -> {
-                        MyPhotoGird(modifier = Modifier)
+                        MyPhotoGird()
                     }
 
                     1 -> {
-                        MyReelsGird(modifier = Modifier)
+                        MyReelsGird()
                     }
 
                     2 -> {
-                        MediaWithMeGird(modifier = Modifier)
+                        MediaWithMeGird()
                     }
                 }
             }
@@ -374,7 +369,7 @@ private fun MyProfileTab(
     isSelected: Boolean,
     item: TabIcons,
     onClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Tab(
         selected = isSelected,
@@ -401,46 +396,8 @@ private fun MyProfileTab(
 }
 
 @Composable
-fun MyPhotoGird(modifier: Modifier) {
-    val list = listOf(
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
-    )
-    val itemSize = list.size
+fun MyPhotoGird(modifier: Modifier = Modifier) {
+    val itemSize = photoList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
     val maxHeight = windowWidth / 3 * (itemSize / 3)
     LazyVerticalGrid(
@@ -453,7 +410,7 @@ fun MyPhotoGird(modifier: Modifier) {
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(list) { item ->
+        items(photoList) { item ->
             CoilImage(
                 imageModel = { item },
                 imageOptions = ImageOptions(
@@ -475,11 +432,15 @@ fun MyPhotoGird(modifier: Modifier) {
 }
 
 @Composable
-fun MyReelsGird(modifier: Modifier) {
-    val list = listOf(1, 2, 3, 4, 5)
-    val itemSize = list.size
+fun MyReelsGird(modifier: Modifier = Modifier) {
+    val itemSize = reelsList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
-    val maxHeight = windowWidth / 3 * (itemSize / 3)
+    val contentsHeight = windowWidth / 3 * (itemSize / 3)
+    val maxHeight = if (contentsHeight > 400) {
+        contentsHeight
+    } else {
+        400
+    }
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
         modifier = modifier
@@ -487,14 +448,14 @@ fun MyReelsGird(modifier: Modifier) {
             .fillMaxSize(),
         userScrollEnabled = false
     ) {
-        items(list) { item ->
+        items(reelsList) { item ->
             Text(text = item.toString())
         }
     }
 }
 
 @Composable
-fun MediaWithMeGird(modifier: Modifier) {
+fun MediaWithMeGird(modifier: Modifier = Modifier) {
     val list = emptyList<String>()
     val itemSize = list.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
@@ -542,4 +503,51 @@ fun MediaWithMeGird(modifier: Modifier) {
 data class TabIcons(
     val selectedIcon: Int,
     val unselectedIcon: Int
+)
+
+val photoList = listOf(
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
+)
+
+val reelsList = listOf(1, 2, 3, 4, 5)
+
+val tabList = listOf(
+    TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
+    TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
+    TabIcons(R.drawable.instagram_tag_icon, R.drawable.instagram_tag_icon)
 )
