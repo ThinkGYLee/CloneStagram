@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -141,13 +140,11 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
-                    modifier = Modifier.wrapContentSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Box(
                         modifier = Modifier
-                            .wrapContentSize()
                             .padding(10.dp)
                     ) {
                         Image(
@@ -189,7 +186,6 @@ fun HomeScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .wrapContentSize()
                                 .border(
                                     width = 3.dp,
                                     brush = Brush.linearGradient(
@@ -202,7 +198,6 @@ fun HomeScreen(
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .wrapContentSize()
                                     .padding(7.dp)
                             ) {
                                 Image(
@@ -448,7 +443,6 @@ private fun CommentItem(
         ) {
             Box(
                 modifier = Modifier
-                    .wrapContentSize()
                     .padding(start = 16.dp, end = 20.dp)
                     .border(
                         width = 2.dp,
@@ -462,7 +456,6 @@ private fun CommentItem(
             ) {
                 Box(
                     modifier = Modifier
-                        .wrapContentSize()
                         .padding(4.dp)
                 ) {
                     Image(
@@ -552,7 +545,6 @@ fun ReplyTextField(
                         color = Color(0xFF848484),
                         modifier = Modifier
                             .align(Alignment.CenterStart)
-                            .wrapContentSize()
                     )
                 }
                 Row(modifier = Modifier.align(Alignment.CenterStart)) {
