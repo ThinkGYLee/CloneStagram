@@ -4,6 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,13 +17,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +45,7 @@ import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
 @Composable
 fun ReelsScreen(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         CoilImage(
@@ -73,32 +75,22 @@ fun ReelsScreen(
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.Bottom
         ) {
-            Column(
-                modifier = Modifier.weight(10f)
-            ) {
+            Column {
                 Row(
-                    modifier = Modifier
-                        .wrapContentSize(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color.Yellow, Color.Red),
-                                    start = Offset(0f, 0f),
-                                    end = Offset(70f, 70f)
-                                ),
-                                shape = CircleShape
-                            )
+                        modifier = Modifier.border(
+                            width = 2.dp,
+                            brush = Brush.linearGradient(
+                                colors = listOf(Color.Yellow, Color.Red),
+                                start = Offset(0f, 0f),
+                                end = Offset(70f, 70f)
+                            ),
+                            shape = CircleShape
+                        )
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(4.dp)
-                        ) {
+                        Box(modifier = Modifier.padding(4.dp)) {
                             Image(
                                 painter = painterResource(id = R.drawable.icons8_test_account_48),
                                 contentDescription = null,
@@ -123,7 +115,7 @@ fun ReelsScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.wrapContentWidth()) {
+                Row {
                     Text(
                         text = "portugal legends",
                         color = Color.White,
@@ -131,7 +123,7 @@ fun ReelsScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.wrapContentWidth()) {
+                Row {
                     Box(
                         modifier = Modifier
                             .wrapContentSize()
@@ -152,7 +144,6 @@ fun ReelsScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Box(
                         modifier = Modifier
-                            .wrapContentSize()
                             .background(
                                 color = Color.DarkGray.copy(
                                     alpha = 0.4f
@@ -170,7 +161,6 @@ fun ReelsScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Box(
                         modifier = Modifier
-                            .wrapContentSize()
                             .background(
                                 color = Color.DarkGray.copy(
                                     alpha = 0.4f
@@ -253,34 +243,40 @@ fun ReelsScreen(
 
 @Composable
 fun ReelsTop(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = "릴스",
-            color = Color.White,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            imageVector = Icons.Filled.KeyboardArrowDown,
-            contentDescription = null,
-            modifier = Modifier.size(28.dp),
-            tint = Color.White
-        )
-        Spacer(modifier = Modifier.weight(10f))
-        Icon(
-            painter = painterResource(id = R.drawable.camera_fill_svgrepo_com),
-            contentDescription = null,
-            modifier = Modifier.size(32.dp),
-            tint = Color.White
-        )
+        Row(modifier = Modifier
+            .padding(8.dp)
+            .clickable { }) {
+            Text(
+                text = "릴스",
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.size(28.dp),
+                tint = Color.White
+            )
+        }
+        IconButton(onClick = { }) {
+            Icon(
+                painter = painterResource(id = R.drawable.camera_fill_svgrepo_com),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = Color.White
+            )
+        }
     }
 }
 
