@@ -250,9 +250,11 @@ fun ReelsTop(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(modifier = Modifier
-            .padding(8.dp)
-            .clickable { }) {
+        Row(
+            modifier = Modifier
+                .padding(8.dp)
+                .clickable { }
+        ) {
             Text(
                 text = "릴스",
                 color = Color.White,
