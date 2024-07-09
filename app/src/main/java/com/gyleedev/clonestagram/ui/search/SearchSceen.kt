@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -71,7 +70,7 @@ import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val comment = rememberTextFieldState()
@@ -181,7 +180,6 @@ fun SearchTextField(
                                 modifier = Modifier
                                     .padding(start = 4.dp)
                                     .align(Alignment.CenterStart)
-                                    .wrapContentSize()
                             )
                         }
                         Row(modifier = Modifier.align(Alignment.CenterStart)) {
@@ -203,45 +201,8 @@ fun SearchTextField(
 
 @Composable
 fun MyPhotoGird(modifier: Modifier) {
-    val list = listOf(
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
-        "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
-        "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
-        "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
-        "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
-        "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
-    )
-    val itemSize = list.size
+
+    val itemSize = searchImageList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
     val maxHeight = windowWidth / 3 * (itemSize / 3) // * 2
     LazyVerticalGrid(
@@ -254,7 +215,7 @@ fun MyPhotoGird(modifier: Modifier) {
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(list) { item ->
+        items(searchImageList) { item ->
             CoilImage(
                 imageModel = { item },
                 imageOptions = ImageOptions(
@@ -306,7 +267,7 @@ fun SearchedList(
         }
         Spacer(modifier = Modifier.height(20.dp))
         list.forEach {
-            SearchedItem(searchedItemData = it, modifier = Modifier)
+            SearchedItem(searchedItemData = it)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
@@ -315,7 +276,7 @@ fun SearchedList(
 @Composable
 fun SearchedItem(
     searchedItemData: SearchedItemData,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val brushModifier = if (searchedItemData.unWatchedStory) {
         Modifier
@@ -333,7 +294,8 @@ fun SearchedItem(
     }
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Box(modifier = brushModifier) {
             Box(modifier = Modifier.padding(4.dp)) {
@@ -389,4 +351,43 @@ data class SearchedItemData(
     val id: String,
     val status: String,
     val unWatchedStory: Boolean
+)
+
+val searchImageList = listOf(
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg",
+    "https://i.pinimg.com/736x/3f/92/2e/3f922eff0b495e6ff697178758d323da.jpg",
+    "https://as2.ftcdn.net/v2/jpg/05/38/31/61/1000_F_538316173_VRwdsZDXy1HQqMNP6XiYLaUIZ1MhN3pq.jpg",
+    "https://img.freepik.com/premium-photo/beautiful-landscapes-scenic-views-natural-wonders-breathtaking-scenery-tranquil-forests-serene_980716-15925.jpg",
+    "https://www.cnn.co.jp/storage/2015/05/03/fbe00d376d9ae2bc25f0ebcfdbd5829e/35064036_007.jpg",
+    "https://fujifilmsquare.jp/photosalon/tokyo/images/2019/190104012/190104012_02.jpg",
+    "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
 )
