@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -259,7 +258,6 @@ fun MyProfileScreen(
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     modifier = Modifier
-                        .wrapContentSize()
                         .heightIn(max = 30.dp)
                 ) {
                     Icon(
@@ -306,7 +304,6 @@ fun MyProfileScreen(
                 FilledTonalIconButton(
                     onClick = { /*TODO*/ },
                     modifier = Modifier
-                        .wrapContentSize()
                         .sizeIn(maxHeight = 32.dp, maxWidth = 32.dp),
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
                         containerColor =
