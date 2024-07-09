@@ -34,6 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -200,8 +201,7 @@ fun SearchTextField(
 }
 
 @Composable
-fun MyPhotoGird(modifier: Modifier) {
-
+fun MyPhotoGird(modifier: Modifier = Modifier) {
     val itemSize = searchImageList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
     val maxHeight = windowWidth / 3 * (itemSize / 3) // * 2
@@ -297,52 +297,52 @@ fun SearchedItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Box(modifier = brushModifier) {
-            Box(modifier = Modifier.padding(4.dp)) {
-                CoilImage(
-                    imageModel = { searchedItemData.link },
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    component = rememberImageComponent {
-                        +ShimmerPlugin(
-                            Shimmer.Flash(
-                                baseColor = Color.White,
-                                highlightColor = Color.LightGray
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = brushModifier) {
+                Box(modifier = Modifier.padding(4.dp)) {
+                    CoilImage(
+                        imageModel = { searchedItemData.link },
+                        imageOptions = ImageOptions(
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        ),
+                        component = rememberImageComponent {
+                            +ShimmerPlugin(
+                                Shimmer.Flash(
+                                    baseColor = Color.White,
+                                    highlightColor = Color.LightGray
+                                )
                             )
-                        )
-                    },
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+            Column {
+                Text(
+                    text = searchedItemData.id,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = searchedItemData.status,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
         }
-
-        Spacer(modifier = Modifier.width(20.dp))
-        Column {
-            Text(
-                text = searchedItemData.id,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = searchedItemData.status,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+        IconButton(onClick = { }) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(20.dp),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
-        // TODO public component에서 한 것 처럼 weight를 사용하지 않고 row의 속성으로 수정
-        Spacer(modifier = Modifier.weight(10f))
-        Icon(
-            imageVector = Icons.Filled.Close,
-            contentDescription = null,
-            modifier = Modifier
-                .size(20.dp)
-                .clickable { },
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
     }
 }
 
