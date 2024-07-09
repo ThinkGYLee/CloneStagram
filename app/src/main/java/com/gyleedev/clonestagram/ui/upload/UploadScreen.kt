@@ -9,6 +9,5 @@ fun UploadScreen(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-
     }
 }
