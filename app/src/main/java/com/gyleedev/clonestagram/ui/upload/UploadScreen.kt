@@ -7,6 +7,4 @@ import androidx.compose.ui.Modifier
 fun UploadScreen(
     modifier: Modifier = Modifier
 ) {
-
-
 }
