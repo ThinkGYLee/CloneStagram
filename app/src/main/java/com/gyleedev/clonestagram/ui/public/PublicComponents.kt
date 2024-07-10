@@ -2,11 +2,14 @@ package com.gyleedev.clonestagram.ui.public
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +17,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,11 +39,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -74,26 +84,13 @@ fun PublicItemDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row {
-                Box(
-                    modifier = Modifier
-                        .border(
-                            width = 1.5.dp,
-                            brush = Brush.linearGradient(
-                                colors = listOf(Color.Yellow, Color.Red),
-                                start = Offset(0f, 0f),
-                                end = Offset(70f, 70f)
-                            ),
-                            shape = CircleShape
-                        )
-                ) {
-                    Box(modifier = Modifier.padding(4.dp)) {
-                        Image(
-                            painter = painterResource(id = itemData.icon),
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    }
-                }
+                UserImageComponent(
+                    userIconDefinition = UserIconDefinition(
+                        iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                        hasStory = true,
+                        userIconType = UserIconType.IconDetail()
+                    )
+                )
                 Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(itemData.ownerId, fontWeight = FontWeight.SemiBold)
@@ -112,7 +109,6 @@ fun PublicItemDetail(
                 )
             }
         }
-
         CoilImage(
             imageModel = { itemData.image },
             imageOptions = ImageOptions(
@@ -127,7 +123,10 @@ fun PublicItemDetail(
                     )
                 )
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.sizeIn(
+                minWidth = LocalConfiguration.current.screenWidthDp.dp,
+                minHeight = LocalConfiguration.current.screenWidthDp.dp
+            )
         )
 
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -281,6 +280,245 @@ private fun Modifier.bounceClick(
         ) {
             onClick()
         }
+}
+
+@Composable
+fun UserImageComponent(
+    userIconDefinition: UserIconDefinition,
+    modifier: Modifier = Modifier
+) {
+    val hasStory = userIconDefinition.hasStory
+    val isAddable: Boolean
+    val iconSize: Int
+    val borderSize: Float
+    val padding: Int
+    val isNew: Boolean
+
+    val imageType = userIconDefinition.iconImageType
+    when (val iconType = userIconDefinition.userIconType) {
+        is UserIconType.IconReels -> {
+            isAddable = false
+            isNew = false
+            iconSize = iconType.iconSize
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+        }
+
+        is UserIconType.IconComment -> {
+            isAddable = false
+            isNew = false
+            iconSize = iconType.iconSize
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+        }
+
+        is UserIconType.IconMyProfile -> {
+            isAddable = false
+            iconSize = iconType.iconSize
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+            isNew = iconType.isNew
+        }
+
+        is UserIconType.IconSearch -> {
+            isAddable = false
+            isNew = false
+            iconSize = iconType.iconSize
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+        }
+
+        is UserIconType.IconStory -> {
+            iconSize = iconType.iconSize
+            isNew = false
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+            isAddable = iconType.isAddable
+        }
+
+        is UserIconType.IconDetail -> {
+            iconSize = iconType.iconSize
+            isNew = false
+            borderSize = iconType.borderSize
+            padding = iconType.padding
+            isAddable = false
+        }
+    }
+
+    val brushModifier = if (hasStory) {
+        modifier
+            .border(
+                width = borderSize.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(Color.Yellow, Color.Red),
+                    start = Offset(0f, 0f),
+                    end = Offset(iconSize * 2.5f, iconSize * 2.5f)
+                ),
+                shape = CircleShape
+            )
+    } else {
+        modifier
+    }
+
+    Box(modifier = brushModifier) {
+        Box(modifier = Modifier.padding(padding.dp)) {
+            when (imageType) {
+                is UserIconImageType.IconFromUrlType -> {
+                    CoilImage(
+                        imageModel = { imageType.url },
+                        imageOptions = ImageOptions(
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        ),
+                        component = rememberImageComponent {
+                            +ShimmerPlugin(
+                                Shimmer.Flash(
+                                    baseColor = Color.White,
+                                    highlightColor = Color.LightGray
+                                )
+                            )
+                        },
+                        modifier = Modifier
+                            .size(iconSize.dp)
+                            .clip(CircleShape)
+                    )
+                }
+
+                is UserIconImageType.IconFromDrawableType -> {
+                    Image(
+                        painter = painterResource(id = imageType.drawable),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(iconSize.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+            }
+            if (isAddable) {
+                Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                    Canvas(modifier = Modifier.background(Color.White), onDraw = {
+                        drawCircle(
+                            color = Color.White,
+                            radius = 8.dp.toPx(),
+                            center = Offset(12.dp.toPx(), 12.dp.toPx())
+                        )
+                    })
+                    Icon(
+                        imageVector = Icons.Filled.AddCircle,
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.facebook_blue),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+            if (isNew) {
+                Box(
+                    modifier = Modifier
+                        .offset(y = 12.dp)
+                        .background(
+                            color = colorResource(id = R.color.facebook_blue),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .border(
+                            color = if (isSystemInDarkTheme()) {
+                                Color.Black
+                            } else {
+                                colorResource(
+                                    id = R.color.facebook_blue
+                                )
+                            },
+                            width = 4.dp,
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(6.dp)
+                        .align(Alignment.BottomCenter)
+
+                ) {
+                    Text(
+                        text = "신규",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier
+                            .background(color = colorResource(id = R.color.facebook_blue))
+                            .align(Alignment.BottomCenter)
+
+                    )
+                }
+                Canvas(modifier = Modifier.background(Color.White), onDraw = {
+                    drawCircle(
+                        color = Color.DarkGray.copy(alpha = 0.6f),
+                        radius = 40.dp.toPx(),
+                        center = Offset(40.dp.toPx(), 40.dp.toPx())
+                    )
+                })
+
+                Icon(
+                    painter = painterResource(id = R.drawable.camera_fill_svgrepo_com),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center)
+                )
+            }
+        }
+    }
+}
+
+data class UserIconDefinition(
+    val iconImageType: UserIconImageType,
+    val hasStory: Boolean,
+    val userIconType: UserIconType
+)
+
+sealed interface UserIconType {
+    data class IconDetail(
+        val iconSize: Int = 36,
+        val borderSize: Float = 1.5f,
+        val padding: Int = 4
+    ) : UserIconType
+
+    data class IconStory(
+        val iconSize: Int = 72,
+        val borderSize: Float = 3f,
+        val padding: Int = 7,
+        val isAddable: Boolean
+    ) : UserIconType
+
+    data class IconSearch(
+        val iconSize: Int = 48,
+        val borderSize: Float = 2f,
+        val padding: Int = 4
+    ) : UserIconType
+
+    data class IconComment(
+        val iconSize: Int = 40,
+        val borderSize: Float = 2f,
+        val padding: Int = 4
+    ) : UserIconType
+
+    data class IconReels(
+        val iconSize: Int = 32,
+        val borderSize: Float = 2f,
+        val padding: Int = 0
+    ) : UserIconType
+
+    data class IconMyProfile(
+        val iconSize: Int = 80,
+        val borderSize: Float = 2f,
+        val padding: Int = 4,
+        val isNew: Boolean
+    ) : UserIconType
+}
+
+sealed interface UserIconImageType {
+    data class IconFromUrlType(
+        val url: String
+    ) : UserIconImageType
+
+    data class IconFromDrawableType(
+        val drawable: Int
+    ) : UserIconImageType
 }
 
 data class CommentInformation(
