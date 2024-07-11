@@ -1,10 +1,7 @@
 package com.gyleedev.clonestagram.ui.home
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -25,15 +22,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.insert
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -55,8 +49,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
@@ -71,6 +63,10 @@ import com.gyleedev.clonestagram.R
 import com.gyleedev.clonestagram.ui.public.CommentInformation
 import com.gyleedev.clonestagram.ui.public.ItemData
 import com.gyleedev.clonestagram.ui.public.PublicItemDetail
+import com.gyleedev.clonestagram.ui.public.UserIconDefinition
+import com.gyleedev.clonestagram.ui.public.UserIconImageType
+import com.gyleedev.clonestagram.ui.public.UserIconType
+import com.gyleedev.clonestagram.ui.public.UserImageComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,33 +139,13 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icons8_test_account_96),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(72.dp)
-                                .align(Alignment.Center)
+                    UserImageComponent(
+                        userIconDefinition = UserIconDefinition(
+                            iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                            hasStory = false,
+                            userIconType = UserIconType.IconStory(isAddable = true)
                         )
-                        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
-                            Canvas(modifier = Modifier.background(Color.White), onDraw = {
-                                drawCircle(
-                                    color = Color.White,
-                                    radius = 8.dp.toPx(),
-                                    center = Offset(12.dp.toPx(), 12.dp.toPx())
-                                )
-                            })
-                            Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = null,
-                                tint = colorResource(id = R.color.facebook_blue),
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "내 스토리",
@@ -178,39 +154,20 @@ fun HomeScreen(
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                for (i in 0..6) {
+                for (i in 0..20) {
                     Column(
                         modifier = Modifier
                             .fillMaxHeight(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .border(
-                                    width = 3.dp,
-                                    brush = Brush.linearGradient(
-                                        colors = listOf(Color.Yellow, Color.Red),
-                                        start = Offset(0f, 0f),
-                                        end = Offset(180f, 180f)
-                                    ),
-                                    shape = CircleShape
-                                )
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(7.dp)
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.icons8_test_account_96),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(72.dp)
-                                        .align(Alignment.Center)
-
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        UserImageComponent(
+                            userIconDefinition = UserIconDefinition(
+                                iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                                hasStory = true,
+                                userIconType = UserIconType.IconStory(isAddable = false)
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "내 스토리",
                             style = MaterialTheme.typography.labelMedium,
@@ -218,7 +175,7 @@ fun HomeScreen(
                         )
                     }
 
-                    if (i < 6) {
+                    if (i < 20) {
                         Spacer(modifier = Modifier.width(20.dp))
                     }
                 }
@@ -439,65 +396,52 @@ private fun CommentItem(
     Column(modifier = modifier.padding(vertical = 4.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 20.dp)
-                    .border(
-                        width = 2.dp,
-                        brush = Brush.linearGradient(
-                            colors = listOf(Color.Yellow, Color.Red),
-                            start = Offset(0f, 0f),
-                            end = Offset(70f, 70f)
-                        ),
-                        shape = CircleShape
+            Row {
+                Spacer(modifier = Modifier.width(16.dp))
+                UserImageComponent(
+                    userIconDefinition = UserIconDefinition(
+                        iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                        hasStory = true,
+                        userIconType = UserIconType.IconComment()
                     )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
+                )
+                Spacer(modifier = Modifier.width(20.dp))
+                Column(
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = item.userImage),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Row {
+                    Row {
+                        Text(
+                            item.userId,
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "${item.writtenHourAgo}일전",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Text(
+                            " ・ ",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Text(
+                            "작성자",
+                            fontWeight = FontWeight.ExtraLight,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        item.userId,
-                        fontWeight = FontWeight.SemiBold,
+                        item.content,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "${item.writtenHourAgo}일전",
-                        fontWeight = FontWeight.ExtraLight,
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                    Text(
-                        " ・ ",
-                        fontWeight = FontWeight.ExtraLight,
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                    Text(
-                        "작성자",
-                        fontWeight = FontWeight.ExtraLight,
-                        style = MaterialTheme.typography.labelMedium
-                    )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    item.content,
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
-            Spacer(modifier = Modifier.weight(10f))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -517,7 +461,6 @@ private fun CommentItem(
                     textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.width(12.dp))
         }
     }
 }
@@ -558,7 +501,8 @@ fun ReplyTextField(
                             containerColor = colorResource(
                                 id = R.color.facebook_blue
                             )
-                        )
+                        ),
+                        enabled = replyText.text.isNotEmpty()
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_upward_alt_24dp_fill0_wght400_grad0_opsz24),
