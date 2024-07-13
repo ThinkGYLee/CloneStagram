@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 fun UploadScreen(
     modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = modifier) { innerPadding->
-        Column(Modifier.padding(innerPadding).consumeWindowInsets(innerPadding)) {
+    Scaffold(modifier = modifier) { innerPadding ->
+        Column(
+            Modifier
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)) {
 
         }
     }
