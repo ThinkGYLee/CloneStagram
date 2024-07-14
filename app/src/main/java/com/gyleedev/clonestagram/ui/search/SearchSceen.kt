@@ -135,13 +135,12 @@ fun SearchTextField(
     var alpha by remember { mutableFloatStateOf(1f) }
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         if (isFocused) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { focusManager.clearFocus(force = true) }
-            )
+            IconButton(onClick = { focusManager.clearFocus(force = true) }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
         }
         BasicTextField2(
