@@ -86,7 +86,7 @@ fun PublicItemDetail(
             Row {
                 UserImageComponent(
                     userIconDefinition = UserIconDefinition(
-                        iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                        iconImageType = itemData.icon,
                         hasStory = true,
                         userIconType = UserIconType.IconDetail()
                     )
@@ -163,6 +163,9 @@ fun PublicItemDetail(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 20.dp)
+                    .clickable {
+                        onBottomSheetStateChange(true)
+                    }
                     .size(24.dp)
             )
             Icon(
@@ -241,7 +244,7 @@ fun PublicItemDetail(
 // bounceClick
 // TODO supperessLint 수정할것
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
-private fun Modifier.bounceClick(
+fun Modifier.bounceClick(
     scaleDown: Float = 0.30f,
     onClick: () -> Unit,
     onClickEnd: () -> Unit

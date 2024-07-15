@@ -67,6 +67,7 @@ import com.gyleedev.clonestagram.ui.public.UserIconDefinition
 import com.gyleedev.clonestagram.ui.public.UserIconImageType
 import com.gyleedev.clonestagram.ui.public.UserIconType
 import com.gyleedev.clonestagram.ui.public.UserImageComponent
+import com.gyleedev.clonestagram.ui.public.bounceClick
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,6 +79,9 @@ fun HomeScreen(
 
     var isCommentBottomSheetTrue by remember { mutableStateOf(false) }
     val comments = viewModel.commentList.collectAsStateWithLifecycle()
+    var bottomSheetBelongedId by remember {
+        mutableStateOf("")
+    }
 
     Scaffold(
         topBar = {
@@ -181,19 +185,26 @@ fun HomeScreen(
                 }
             }
             // 게시물
-
-            PublicItemDetail(
-                itemData = ItemData.initialItem,
-                comments = comments.value,
-                onBottomSheetStateChange = { isCommentBottomSheetTrue = true }
-            )
+            ItemData.initialItem.forEach { item ->
+                PublicItemDetail(
+                    itemData = item,
+                    comments = comments.value,
+                    onBottomSheetStateChange = {
+                        isCommentBottomSheetTrue = true
+                        bottomSheetBelongedId = item.ownerId
+                    }
+                )
+            }
         }
 
         if (isCommentBottomSheetTrue) {
             CommentModalBottomSheet(
-                modifier = Modifier,
+                ownerId = bottomSheetBelongedId,
                 comments = comments.value,
-                closeSheet = { isCommentBottomSheetTrue = false },
+                closeSheet = {
+                    isCommentBottomSheetTrue = false
+                    bottomSheetBelongedId = ""
+                },
                 onAddComment = {
                     viewModel.addComment(it)
                 }
@@ -205,6 +216,7 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun CommentModalBottomSheet(
+    ownerId: String,
     comments: List<CommentInformation>,
     onAddComment: (String) -> Unit,
     closeSheet: () -> Unit,
@@ -375,8 +387,9 @@ private fun CommentModalBottomSheet(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         ReplyTextField(
+
                             replyText = comment,
-                            replyTextHint = "think_gy_lee에게 댓글 쓰기",
+                            replyTextHint = "${ownerId}에게 댓글 쓰기",
                             onReply = {
                                 onAddComment(comment.text.toString())
                             }
@@ -393,6 +406,10 @@ private fun CommentItem(
     item: CommentInformation,
     modifier: Modifier = Modifier
 ) {
+    val isHeartTrue = remember {
+        mutableStateOf(false)
+    }
+
     Column(modifier = modifier.padding(vertical = 4.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -444,22 +461,50 @@ private fun CommentItem(
             }
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(end = 8.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.heart_svgrepo_com),
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${item.heartCount}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                    modifier = Modifier.sizeIn(28.dp),
-                    textAlign = TextAlign.Center
-                )
+                if (isHeartTrue.value) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(16.dp)
+                            .bounceClick(
+                                onClick = { },
+                                onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
+                            ),
+                        tint = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "${item.heartCount + 1}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                        modifier = Modifier.sizeIn(28.dp),
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(16.dp)
+                            .bounceClick(
+                                onClick = { },
+                                onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
+                            ),
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "${item.heartCount}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                        modifier = Modifier.sizeIn(28.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
