@@ -20,13 +20,14 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UploadScreen(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick =  onClick ) {
                         Icon(imageVector = Icons.Filled.Close, contentDescription = null)
                     }
                 },
