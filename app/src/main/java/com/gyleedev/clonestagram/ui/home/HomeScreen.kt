@@ -401,6 +401,194 @@ private fun CommentModalBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+private fun ShareModalBottomSheet(
+    ownerId: String,
+    comments: List<CommentInformation>,
+    onAddComment: (String) -> Unit,
+    closeSheet: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val sheetState = rememberModalBottomSheetState()
+    val comment = rememberTextFieldState()
+
+    ModalBottomSheet(
+        onDismissRequest = closeSheet,
+        sheetState = sheetState,
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier.fillMaxHeight(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Column(modifier = Modifier.align(Alignment.TopStart)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "댓글")
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                HorizontalDivider(
+                    thickness = 0.125.dp
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+                comments.forEach {
+                    CommentItem(item = it)
+                }
+            }
+
+            BottomAppBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset {
+                        IntOffset(
+                            x = 0,
+                            y = -sheetState
+                                .requireOffset()
+                                .toInt()
+                        )
+                    },
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 80.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly
+                    ) {
+                        Text(
+                            text = "❤️",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "❤️"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "✨",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "✨"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "👍",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "👍"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "👏",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "👏"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😭",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😭"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😍",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😍"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😮",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😮"
+                                    )
+                                }
+                            }
+                        )
+                        Text(
+                            text = "😂",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.clickable {
+                                comment.edit {
+                                    insert(
+                                        comment.text.length,
+                                        "😂"
+                                    )
+                                }
+                            }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.icons8_test_account_48),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(48.dp)
+                                .width(48.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ReplyTextField(
+
+                            replyText = comment,
+                            replyTextHint = "${ownerId}에게 댓글 쓰기",
+                            onReply = {
+                                onAddComment(comment.text.toString())
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun CommentItem(
     item: CommentInformation,
