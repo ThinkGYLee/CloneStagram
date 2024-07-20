@@ -82,6 +82,9 @@ fun HomeScreen(
     var bottomSheetBelongedId by remember {
         mutableStateOf("")
     }
+    var isShareBottomSheetTrue by remember {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         topBar = {
@@ -199,6 +202,20 @@ fun HomeScreen(
 
         if (isCommentBottomSheetTrue) {
             CommentModalBottomSheet(
+                ownerId = bottomSheetBelongedId,
+                comments = comments.value,
+                closeSheet = {
+                    isCommentBottomSheetTrue = false
+                    bottomSheetBelongedId = ""
+                },
+                onAddComment = {
+                    viewModel.addComment(it)
+                }
+            )
+        }
+
+        if (isShareBottomSheetTrue) {
+            ShareModalBottomSheet(
                 ownerId = bottomSheetBelongedId,
                 comments = comments.value,
                 closeSheet = {
