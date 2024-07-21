@@ -192,9 +192,12 @@ fun HomeScreen(
                 PublicItemDetail(
                     itemData = item,
                     comments = comments.value,
-                    onBottomSheetStateChange = {
+                    onCommentBottomSheetStatusChanged = {
                         isCommentBottomSheetTrue = true
                         bottomSheetBelongedId = item.ownerId
+                    },
+                    onShareBottomSheetStatusChanged = {
+                        isShareBottomSheetTrue = true
                     }
                 )
             }

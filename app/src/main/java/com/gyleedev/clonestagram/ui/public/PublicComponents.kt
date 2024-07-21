@@ -61,7 +61,8 @@ import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 fun PublicItemDetail(
     itemData: ItemData,
     comments: List<CommentInformation>,
-    onBottomSheetStateChange: (Boolean) -> Unit,
+    onCommentBottomSheetStatusChanged: (Boolean) -> Unit,
+    onShareBottomSheetStatusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isHeartTrue = remember {
@@ -164,7 +165,7 @@ fun PublicItemDetail(
                 modifier = Modifier
                     .padding(start = 20.dp)
                     .clickable {
-                        onBottomSheetStateChange(true)
+                        onCommentBottomSheetStatusChanged(true)
                     }
                     .size(24.dp)
             )
@@ -173,6 +174,9 @@ fun PublicItemDetail(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 20.dp)
+                    .clickable {
+                        onShareBottomSheetStatusChanged(true)
+                    }
                     .size(24.dp)
             )
             Spacer(modifier = Modifier.weight(10f))
@@ -230,7 +234,7 @@ fun PublicItemDetail(
                 "댓글 ${comments.size}개 모두 보기",
                 modifier = Modifier
                     .padding(start = 20.dp)
-                    .clickable { onBottomSheetStateChange(true) }
+                    .clickable { onCommentBottomSheetStatusChanged(true) }
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -370,7 +374,7 @@ fun UserImageComponent(
                     CoilImage(
                         imageModel = { imageType.url },
                         imageOptions = ImageOptions(
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             alignment = Alignment.Center
                         ),
                         component = rememberImageComponent {
