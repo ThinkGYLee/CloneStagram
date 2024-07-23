@@ -157,74 +157,6 @@ fun MyProfileScreen(
                             userIconType = UserIconType.IconMyProfile(isNew = true)
                         )
                     )
-                    /*Box(
-                        modifier = Modifier
-                            .border(
-                                width = 4.dp,
-                                color = Color.LightGray.copy(alpha = 0.5f),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Box {
-                            Image(
-                                painter = painterResource(id = R.drawable.profile),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.Center)
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .offset(y = 12.dp)
-                                    .background(
-                                        color = colorResource(id = R.color.facebook_blue),
-                                        shape = RoundedCornerShape(4.dp)
-                                    )
-                                    .border(
-                                        color = if (isSystemInDarkTheme()) {
-                                            Color.Black
-                                        } else {
-                                            colorResource(
-                                                id = R.color.facebook_blue
-                                            )
-                                        },
-                                        width = 4.dp,
-                                        shape = RoundedCornerShape(4.dp)
-                                    )
-                                    .padding(6.dp)
-                                    .align(Alignment.BottomCenter)
-
-                            ) {
-                                Text(
-                                    text = "신규",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    modifier = Modifier
-                                        .background(color = colorResource(id = R.color.facebook_blue))
-                                        .align(Alignment.BottomCenter)
-
-                                )
-                            }
-                        }
-                    }
-
-                    Canvas(modifier = Modifier.background(Color.White), onDraw = {
-                        drawCircle(
-                            color = Color.DarkGray.copy(alpha = 0.6f),
-                            radius = 40.dp.toPx(),
-                            center = Offset(0.dp.toPx(), 0.dp.toPx())
-                        )
-                    })
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.camera_fill_svgrepo_com),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center)
-                    )*/
                 }
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -433,23 +365,36 @@ fun MyPhotoGird(modifier: Modifier = Modifier) {
 
 @Composable
 fun MyReelsGird(modifier: Modifier = Modifier) {
-    val itemSize = reelsList.size
+    val itemSize = photoList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
-    val contentsHeight = windowWidth / 3 * (itemSize / 3)
-    val maxHeight = if (contentsHeight > 400) {
-        contentsHeight
-    } else {
-        400
-    }
+    val maxHeight = windowWidth / 3 * (itemSize / 3)
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
+        columns = GridCells.Fixed(3),
+        flingBehavior = ScrollableDefaults.flingBehavior(),
         modifier = modifier
             .height(maxHeight.dp)
             .fillMaxSize(),
-        userScrollEnabled = false
+        userScrollEnabled = true,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(reelsList) { item ->
-            Text(text = item.toString())
+        items(photoList) { item ->
+            CoilImage(
+                imageModel = { item },
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                component = rememberImageComponent {
+                    +ShimmerPlugin(
+                        Shimmer.Flash(
+                            baseColor = Color.White,
+                            highlightColor = Color.LightGray
+                        )
+                    )
+                },
+                modifier = Modifier.sizeIn(minWidth = 128.dp, minHeight = 128.dp)
+            )
         }
     }
 }
