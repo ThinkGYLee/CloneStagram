@@ -27,7 +27,7 @@ fun UploadScreen(
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick =  onClick ) {
+                    IconButton(onClick = onClick) {
                         Icon(imageVector = Icons.Filled.Close, contentDescription = null)
                     }
                 },
@@ -38,9 +38,10 @@ fun UploadScreen(
                         color = Color.Blue,
                         modifier = Modifier
                             .padding(end = 12.dp)
-                            .clickable { })
-                })
-
+                            .clickable { }
+                    )
+                }
+            )
         },
         modifier = modifier
     ) { innerPadding ->
