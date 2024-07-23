@@ -2,7 +2,6 @@ package com.gyleedev.clonestagram.ui.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
@@ -46,11 +44,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -62,6 +57,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyleedev.clonestagram.R
+import com.gyleedev.clonestagram.ui.public.UserIconDefinition
+import com.gyleedev.clonestagram.ui.public.UserIconImageType
+import com.gyleedev.clonestagram.ui.public.UserIconType
+import com.gyleedev.clonestagram.ui.public.UserImageComponent
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
@@ -136,13 +135,12 @@ fun SearchTextField(
     var alpha by remember { mutableFloatStateOf(1f) }
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         if (isFocused) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { focusManager.clearFocus(force = true) }
-            )
+            IconButton(onClick = { focusManager.clearFocus(force = true) }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
         }
         BasicTextField2(
@@ -278,48 +276,19 @@ fun SearchedItem(
     searchedItemData: SearchedItemData,
     modifier: Modifier = Modifier
 ) {
-    val brushModifier = if (searchedItemData.unWatchedStory) {
-        Modifier
-            .border(
-                width = 2.dp,
-                brush = Brush.linearGradient(
-                    colors = listOf(Color.Yellow, Color.Red),
-                    start = Offset(0f, 0f),
-                    end = Offset(180f, 180f)
-                ),
-                shape = CircleShape
-            )
-    } else {
-        Modifier
-    }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = brushModifier) {
-                Box(modifier = Modifier.padding(4.dp)) {
-                    CoilImage(
-                        imageModel = { searchedItemData.link },
-                        imageOptions = ImageOptions(
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
-                        ),
-                        component = rememberImageComponent {
-                            +ShimmerPlugin(
-                                Shimmer.Flash(
-                                    baseColor = Color.White,
-                                    highlightColor = Color.LightGray
-                                )
-                            )
-                        },
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
-                    )
-                }
-            }
+            UserImageComponent(
+                userIconDefinition = UserIconDefinition(
+                    iconImageType = UserIconImageType.IconFromUrlType(searchedItemData.link),
+                    hasStory = searchedItemData.unWatchedStory,
+                    userIconType = UserIconType.IconSearch()
+                )
+            )
             Spacer(modifier = Modifier.width(20.dp))
             Column {
                 Text(

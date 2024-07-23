@@ -177,7 +177,10 @@ fun CloneStagramScreen(
                     )
                 }
             ) {
-                UploadScreen(modifier = Modifier.fillMaxSize())
+                UploadScreen(
+                    onClick = { navController.navigateUp() },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
 
             composable(route = BottomNavItem.Setting.screenRoute) {

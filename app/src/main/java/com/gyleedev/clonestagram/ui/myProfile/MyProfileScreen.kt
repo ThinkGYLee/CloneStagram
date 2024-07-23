@@ -1,13 +1,9 @@
 package com.gyleedev.clonestagram.ui.myProfile
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.ScrollableDefaults
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -29,7 +24,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -55,16 +49,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.gyleedev.clonestagram.R
+import com.gyleedev.clonestagram.ui.public.UserIconDefinition
+import com.gyleedev.clonestagram.ui.public.UserIconImageType
+import com.gyleedev.clonestagram.ui.public.UserIconType
+import com.gyleedev.clonestagram.ui.public.UserImageComponent
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
@@ -154,73 +150,12 @@ fun MyProfileScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(modifier = Modifier, Alignment.Center) {
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 4.dp,
-                                color = Color.LightGray.copy(alpha = 0.5f),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Box {
-                            Image(
-                                painter = painterResource(id = R.drawable.profile),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.Center)
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .offset(y = 12.dp)
-                                    .background(
-                                        color = colorResource(id = R.color.facebook_blue),
-                                        shape = RoundedCornerShape(4.dp)
-                                    )
-                                    .border(
-                                        color = if (isSystemInDarkTheme()) {
-                                            Color.Black
-                                        } else {
-                                            colorResource(
-                                                id = R.color.facebook_blue
-                                            )
-                                        },
-                                        width = 4.dp,
-                                        shape = RoundedCornerShape(4.dp)
-                                    )
-                                    .padding(6.dp)
-                                    .align(Alignment.BottomCenter)
-
-                            ) {
-                                Text(
-                                    text = "신규",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    modifier = Modifier
-                                        .background(color = colorResource(id = R.color.facebook_blue))
-                                        .align(Alignment.BottomCenter)
-
-                                )
-                            }
-                        }
-                    }
-
-                    Canvas(modifier = Modifier.background(Color.White), onDraw = {
-                        drawCircle(
-                            color = Color.DarkGray.copy(alpha = 0.6f),
-                            radius = 40.dp.toPx(),
-                            center = Offset(0.dp.toPx(), 0.dp.toPx())
+                    UserImageComponent(
+                        userIconDefinition = UserIconDefinition(
+                            iconImageType = UserIconImageType.IconFromDrawableType(R.drawable.icons8_test_account_96),
+                            hasStory = false,
+                            userIconType = UserIconType.IconMyProfile(isNew = true)
                         )
-                    })
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.camera_fill_svgrepo_com),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center)
                     )
                 }
 
@@ -430,23 +365,36 @@ fun MyPhotoGird(modifier: Modifier = Modifier) {
 
 @Composable
 fun MyReelsGird(modifier: Modifier = Modifier) {
-    val itemSize = reelsList.size
+    val itemSize = photoList.size
     val windowWidth = LocalConfiguration.current.screenWidthDp
-    val contentsHeight = windowWidth / 3 * (itemSize / 3)
-    val maxHeight = if (contentsHeight > 400) {
-        contentsHeight
-    } else {
-        400
-    }
+    val maxHeight = windowWidth / 3 * (itemSize / 3)
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
+        columns = GridCells.Fixed(3),
+        flingBehavior = ScrollableDefaults.flingBehavior(),
         modifier = modifier
             .height(maxHeight.dp)
             .fillMaxSize(),
-        userScrollEnabled = false
+        userScrollEnabled = true,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(reelsList) { item ->
-            Text(text = item.toString())
+        items(photoList) { item ->
+            CoilImage(
+                imageModel = { item },
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                ),
+                component = rememberImageComponent {
+                    +ShimmerPlugin(
+                        Shimmer.Flash(
+                            baseColor = Color.White,
+                            highlightColor = Color.LightGray
+                        )
+                    )
+                },
+                modifier = Modifier.sizeIn(minWidth = 128.dp, minHeight = 128.dp)
+            )
         }
     }
 }
