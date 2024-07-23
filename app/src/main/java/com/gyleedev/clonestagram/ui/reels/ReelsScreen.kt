@@ -19,11 +19,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,21 +37,45 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyleedev.clonestagram.R
+import com.gyleedev.clonestagram.ui.public.CommentModalBottomSheet
+import com.gyleedev.clonestagram.ui.public.MenuModalBottomSheet
+import com.gyleedev.clonestagram.ui.public.ShareModalBottomSheet
 import com.gyleedev.clonestagram.ui.public.UserIconDefinition
 import com.gyleedev.clonestagram.ui.public.UserIconImageType
 import com.gyleedev.clonestagram.ui.public.UserIconType
 import com.gyleedev.clonestagram.ui.public.UserImageComponent
+import com.gyleedev.clonestagram.ui.public.bounceClick
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.placeholder.shimmer.Shimmer
 import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReelsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ReelsViewModel = hiltViewModel()
 ) {
+    var isCommentBottomSheetTrue by remember { mutableStateOf(false) }
+    val comments = viewModel.commentList.collectAsStateWithLifecycle()
+    var bottomSheetBelongedId by remember {
+        mutableStateOf("")
+    }
+    var isShareBottomSheetTrue by remember { mutableStateOf(false) }
+    var isMenuBottomSheetTrue by remember { mutableStateOf(false) }
+
+    val commentSheetState = rememberModalBottomSheetState()
+    val shareSheetState = rememberModalBottomSheetState()
+    val menuSheetState = rememberModalBottomSheetState()
+
+    val isHeartTrue = remember {
+        mutableStateOf(false)
+    }
+
     Box(modifier = modifier.fillMaxSize()) {
         CoilImage(
             imageModel = { imageLink },
@@ -166,12 +196,31 @@ fun ReelsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
             Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(
-                    painter = painterResource(id = R.drawable.heart_svgrepo_com),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
+                if (isHeartTrue.value) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.heart_filled_svgrepo_com__1_),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(24.dp)
+                            .bounceClick(
+                                onClick = {},
+                                onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
+                            ),
+                        tint = Color.Red
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.heart_svgrepo_com),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(24.dp)
+                            .bounceClick(
+                                onClick = {},
+                                onClickEnd = { isHeartTrue.value = !isHeartTrue.value }
+                            ),
+                        tint = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "좋아요", color = Color.White)
                 Spacer(modifier = Modifier.height(12.dp))
@@ -179,7 +228,12 @@ fun ReelsScreen(
                     painter = painterResource(id = R.drawable.instagram_comment_13416),
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            isCommentBottomSheetTrue = true
+                            bottomSheetBelongedId = "think_gy_lee"
+                        }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "330", color = Color.White)
@@ -188,14 +242,23 @@ fun ReelsScreen(
                     painter = painterResource(id = R.drawable.instagram_share_13423),
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            isShareBottomSheetTrue = true
+                            bottomSheetBelongedId = "think_gy_lee"
+                        }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            isMenuBottomSheetTrue = true
+                        }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Box(
@@ -225,6 +288,40 @@ fun ReelsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+
+    if (isCommentBottomSheetTrue) {
+        CommentModalBottomSheet(
+            ownerId = bottomSheetBelongedId,
+            comments = comments.value,
+            closeSheet = {
+                isCommentBottomSheetTrue = false
+                bottomSheetBelongedId = ""
+            },
+            onAddComment = {
+                viewModel.addComment(it)
+            },
+            sheetState = commentSheetState
+        )
+    }
+
+    if (isShareBottomSheetTrue) {
+        ShareModalBottomSheet(
+            ownerId = bottomSheetBelongedId,
+            closeSheet = {
+                isShareBottomSheetTrue = false
+                bottomSheetBelongedId = ""
+            },
+            sheetState = shareSheetState
+        )
+    }
+    if (isMenuBottomSheetTrue) {
+        MenuModalBottomSheet(
+            closeSheet = {
+                isMenuBottomSheetTrue = false
+            },
+            sheetState = menuSheetState
+        )
     }
 }
 
