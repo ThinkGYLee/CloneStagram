@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -538,7 +537,7 @@ fun MenuModalBottomSheet(
             ) {
                 Spacer(modifier = Modifier.weight(10f))
             }
-        }, modifier = Modifier.wrapContentSize()) { innerPadding ->
+        }, modifier = Modifier) { innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding)

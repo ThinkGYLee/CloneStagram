@@ -1,4 +1,4 @@
-package com.gyleedev.clonestagram.ui.myProfile
+package com.gyleedev.clonestagram.ui.myprofile
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

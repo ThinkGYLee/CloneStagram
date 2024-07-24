@@ -1,4 +1,4 @@
-package com.gyleedev.clonestagram.ui.myProfile
+package com.gyleedev.clonestagram.ui.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
