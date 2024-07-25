@@ -489,8 +489,6 @@ val photoList = listOf(
     "https://italian-guide.com/wp-content/uploads/2018/11/Beautiful-landscape-in-Tuscany-Italy.jpg"
 )
 
-val reelsList = listOf(1, 2, 3, 4, 5)
-
 val tabList = listOf(
     TabIcons(R.drawable.icons8_grid_50__1_, R.drawable.icons8_grid_50__2_),
     TabIcons(R.drawable.icons8_instagram_reels__1_, R.drawable.icons8_instagram_reels),
