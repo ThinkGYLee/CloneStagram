@@ -45,21 +45,18 @@ import com.gyleedev.clonestagram.ui.search.SearchScreen
 import com.gyleedev.clonestagram.ui.upload.UploadScreen
 
 sealed class BottomNavItem(
-    val title: Int,
     val icons: BottomNavIconTypes,
     val screenRoute: String
 ) {
     data object Home : BottomNavItem(
-        R.string.title_home,
         BottomNavIconTypes.BottomNavDoubleImageVector(Icons.Outlined.Home, Icons.Filled.Home),
         HOME
     )
 
     data object Detail :
-        BottomNavItem(R.string.title_detail, BottomNavIconTypes.BottomNavNoIcon, DETAIL)
+        BottomNavItem(BottomNavIconTypes.BottomNavNoIcon, DETAIL)
 
     data object Search : BottomNavItem(
-        R.string.title_search,
         BottomNavIconTypes.BottomNavDoubleDrawable(
             R.drawable.search_24dp_fill0_wght400_grad0_opsz24,
             R.drawable.search_24dp_fill0_wght600_grad0_opsz24
@@ -68,13 +65,11 @@ sealed class BottomNavItem(
     )
 
     data object Setting : BottomNavItem(
-        R.string.title_setting,
         BottomNavIconTypes.BottomNavSingleDrawableImage(R.drawable.icons8_test_account_48),
         SETTING
     )
 
     data object Reels : BottomNavItem(
-        R.string.title_reels,
         BottomNavIconTypes.BottomNavDoubleDrawable(
             R.drawable.icons8_instagram_reels,
             R.drawable.icons8_instagram_reels__1_
@@ -83,7 +78,6 @@ sealed class BottomNavItem(
     )
 
     data object Upload : BottomNavItem(
-        R.string.title_upload,
         BottomNavIconTypes.BottomNavSingleDrawableIcon(
             R.drawable.icons8_add_100
         ),
