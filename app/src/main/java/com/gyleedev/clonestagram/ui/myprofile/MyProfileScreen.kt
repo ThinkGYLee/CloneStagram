@@ -106,21 +106,21 @@ fun MyProfileScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {}) {
                         Icon(
                             painter = painterResource(id = R.drawable._4px_threads__app__logo_svg),
                             contentDescription = null,
                             modifier = Modifier.size(20.dp)
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icons8_add_100),
                             contentDescription = null,
                             modifier = Modifier.size(20.dp)
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Outlined.Menu,
                             contentDescription = null,
@@ -190,7 +190,7 @@ fun MyProfileScreen(
                     .padding(start = 16.dp)
             ) {
                 FilledTonalButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     modifier = Modifier
                         .heightIn(max = 30.dp)
@@ -215,7 +215,7 @@ fun MyProfileScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.padding(horizontal = 16.dp)) {
                 FilledTonalButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     modifier = Modifier
                         .weight(1f)
                         .heightIn(max = 32.dp),
@@ -226,7 +226,7 @@ fun MyProfileScreen(
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 FilledTonalButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     modifier = Modifier
                         .weight(1f)
                         .heightIn(max = 32.dp),
@@ -237,7 +237,7 @@ fun MyProfileScreen(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 FilledTonalIconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     modifier = Modifier
                         .sizeIn(maxHeight = 32.dp, maxWidth = 32.dp),
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
