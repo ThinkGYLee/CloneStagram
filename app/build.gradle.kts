@@ -1,9 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -40,12 +43,17 @@ android {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    composeCompiler {
+        enableStrongSkippingMode = true
+        includeSourceInformation = true
+        // composeCompiler 블록내의 설정들은 하단 Reference를 참고해보세요
+        // Compose compiler -> Compose compiler options dsl
     }
     packaging {
         resources {
