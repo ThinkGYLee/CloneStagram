@@ -86,14 +86,14 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.heart_svgrepo_com),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.facebook_messenger_2880),
                             contentDescription = null,

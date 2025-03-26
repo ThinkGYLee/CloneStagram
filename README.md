@@ -1,48 +1,40 @@
-# CloneStagram
+# Instagram UI Clone
+상용 앱에서 자주 사용되는 피드형 UI를 구현하면서 Compose를 연습한 앱입니다.
+다른 코드를 참고하지 않고 앱을 보면서 직접 구현했습니다.
 
-Instagram의 UI를 최대한 비슷하게 클론!
+## 주요기능
+- 피드형 UI 구현
+- Modal Bottom Sheet를 사용한 UI 구현
+- 애니메이션을 사용한 인터렉션 구현
+- Modal Bottom Sheet가 보일 대 네비게이션바 위로 바텀바를 고정
+- LazyVerticalGrid를 사용한 바둑판 모양의 컴포넌트를 포함한 UI 구현
 
-## Development
+## 기술 스택
+| 구분 | 내용 |
+| --- | --- |
+| Jetpack | Navigation, Compose, Lifecycle, ViewModel, Paging3 |
+| Asynchronous Processing | Coroutine, Flow |
+| Dependency Injection | Hilt |
+| Third Party Library | Glide |
 
-### Required
+## 스크린샷
+| 홈 | 릴스 | 내 프로필 |
+| --- | --- | --- |
+| <img src="https://github.com/user-attachments/assets/cb71153b-974a-4800-9a77-4c04553602ef" width="200"/> | <img src="https://github.com/user-attachments/assets/8133c5ce-63bd-4f37-89a7-edf97fccb7b5" width="200"/> | <img src="https://github.com/user-attachments/assets/251626d3-e16f-4105-a5a2-10e1229e62d2" width="200"/> |
 
-- IDE : Android Studio Iguana ([Download](https://developer.android.com/studio))
-- JDK : Java 17을 실행할 수 있는 JDK
+| 검색 |
+| --- |
+| <img src="https://github.com/user-attachments/assets/de9c13ca-5a5f-42a1-a823-329682e18d90" width="200"/> |
 
-- Kotlin Language : 1.9.24
+## 주요 동영상
+| 코멘트 동작 | 홈 스크롤 | 공유 바텀시트 |
+| --- | --- | --- |
+| <img src="https://github.com/user-attachments/assets/e937a237-853b-4ed1-934c-d978bcfafbd8" width="200"/> | <img src="https://github.com/user-attachments/assets/02bb919c-d29b-41a7-80b5-c373f7917d55" width="200"/> | <img src="https://github.com/user-attachments/assets/38e69224-19c7-4c1f-99fe-364e21abce83" width="200"/> |
 
-### Language
+| 아이콘 애니메이션 | 메뉴 바텀시트 | 릴스 화면 동작 |
+| --- | --- | --- |
+| <img src="https://github.com/user-attachments/assets/cfa21c96-ceb8-419e-958a-61def963037e" width="200"/> | <img src="https://github.com/user-attachments/assets/da11d465-564c-49be-a9e3-8baf27d1a782" width="200"/> | <img src="https://github.com/user-attachments/assets/12ecd412-b0b2-4502-b4d9-f77933c00e5c" width="200"/> |
 
-- Kotlin
-
-### Libraries
-
-+ Target SDK Level 34
-+ Min SDK Level 26
-+ Kotlin 1.9.24
-
-| 구분                      | 내용|
-|-------------------------| --|
-| Architecture            | MVVM, Clean Architecture|
-| Jetpack                 | Navigation, Compose, Lifecycle, ViewModel,|
-| Asynchronous Processing | Coroutine, Flow|
-| Dependency Injection    | Hilt|
-| Third Party Library     | Coil, LandScapist|
-
-## Images
-
-<img src="https://github.com/user-attachments/assets/2c27fc57-f6bc-4ace-a702-e22ba284c8c1" width="250" />
-<img src="https://github.com/user-attachments/assets/61cee10f-8028-4e06-8c72-2bacc81e7efa" width="250" />
-<img src="https://github.com/user-attachments/assets/dcd62eda-6033-4391-b76b-6dfe4ab6a471" width="250" />
-<img src="https://github.com/user-attachments/assets/e77c4915-ea01-4d34-a60a-ef4790736e9b" width="250" />
-<img src="https://github.com/user-attachments/assets/42e0d1c5-f4db-4035-81d0-f17a4d12096f" width="250" />
-
-
-## Architecture
-
-![img](https://lh6.googleusercontent.com/jIm6sL0mqukk0OROYyStYNsBulEFLZki-z2Y9OD73K-cpvEre-VP1wmdSC-bDpNJrGdhB4bOZbABRspBcn4FJCtJs4uQKKwWesOdThS-B75HwnCdTCqEKXAClxOimOtIu9WbabaP_Mpel6dDpLSSQVk)
-
-### Module
-
-본 프로젝트는 Single-module 구조입니다.
-
+| 검색 화면 동작 | 내 프로필 화면 동작 |
+| --- | --- |
+| <img src="https://github.com/user-attachments/assets/605bade1-a28c-43c9-856f-12a0dbab3966" width="200"/> | <img src="https://github.com/user-attachments/assets/b7d0971c-e289-447b-b9fe-9dbf926ec8bd" width="200"/> |

@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -286,7 +285,6 @@ fun PublicItemDetail(
 // TODO supperessLint 수정할것
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.bounceClick(
-    scaleDown: Float = 0.30f,
     onClick: () -> Unit,
     onClickEnd: () -> Unit
 ) = composed {
@@ -295,6 +293,8 @@ fun Modifier.bounceClick(
     val animatable = remember {
         Animatable(1f)
     }
+
+    val scaleDown = 0.30f
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
@@ -538,7 +538,7 @@ fun MenuModalBottomSheet(
             ) {
                 Spacer(modifier = Modifier.weight(10f))
             }
-        }, modifier = Modifier.wrapContentSize()) { innerPadding ->
+        }, modifier = Modifier) { innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -698,7 +698,7 @@ fun ShareModalBottomSheet(
                     Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { }) {
                                 CoilImage(
                                     imageModel = { ItemData.initialItem.find { it.ownerId == ownerId }?.icon?.url },
                                     imageOptions = ImageOptions(
@@ -724,7 +724,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -741,7 +741,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -758,7 +758,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -775,7 +775,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -792,7 +792,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -809,7 +809,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -826,7 +826,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -843,7 +843,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -860,7 +860,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -877,7 +877,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -894,7 +894,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -911,7 +911,7 @@ fun ShareModalBottomSheet(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { },
                                 modifier = Modifier.background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = CircleShape
@@ -1122,6 +1122,7 @@ fun CommentModalBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 80.dp)
+                        .padding(bottom = 8.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -1246,6 +1247,7 @@ fun CommentModalBottomSheet(
                                 onAddComment(comment.text.toString())
                             }
                         )
+
                     }
                 }
             }
