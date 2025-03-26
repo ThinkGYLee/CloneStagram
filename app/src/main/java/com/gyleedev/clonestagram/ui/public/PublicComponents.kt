@@ -285,7 +285,6 @@ fun PublicItemDetail(
 // TODO supperessLint 수정할것
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.bounceClick(
-    scaleDown: Float = 0.30f,
     onClick: () -> Unit,
     onClickEnd: () -> Unit
 ) = composed {
@@ -294,6 +293,8 @@ fun Modifier.bounceClick(
     val animatable = remember {
         Animatable(1f)
     }
+
+    val scaleDown = 0.30f
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
@@ -1121,6 +1122,7 @@ fun CommentModalBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 80.dp)
+                        .padding(bottom = 8.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -1245,6 +1247,7 @@ fun CommentModalBottomSheet(
                                 onAddComment(comment.text.toString())
                             }
                         )
+
                     }
                 }
             }
