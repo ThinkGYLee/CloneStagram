@@ -1247,7 +1247,6 @@ fun CommentModalBottomSheet(
                                 onAddComment(comment.text.toString())
                             }
                         )
-
                     }
                 }
             }
